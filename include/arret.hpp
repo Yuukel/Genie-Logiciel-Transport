@@ -16,4 +16,13 @@ class arret{
 
 };
 
+bool compare_horaires(const horaire& h1, const horaire& h2) {
+    if (h1.heure > h2.heure) {
+        return true;
+    } else if (h1.heure == h2.heure && h1.minute > h2.minute) {
+        return true;
+    }
+    return false;
+}
+
 #endif
