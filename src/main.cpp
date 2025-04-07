@@ -18,14 +18,17 @@ int main(){
     readTrips(tripsFilePath, &lignes);
 
     // Compléter les lignes avec les arrêts et horaires depuis stop_times.txt
-    completeLignes(stopTimesFilePath, lignes, stops);
+    completeLignes(stopTimesFilePath, &lignes, stops);
 
     // Afficher les informations des lignes
-    for (const auto& ligne : lignes) {
-        ligne.print();
-        ligne.printArrets();
-        ligne.printHoraires();
-    }
+    // for (const auto& ligne : lignes) {
+    //     ligne.print();
+    //     ligne.printArrets();
+    //     ligne.printHoraires();
+    // }
+    lignes[0].print();
+    lignes[0].printArrets();
+    lignes[0].printHoraires();
 
     return 0;
 }

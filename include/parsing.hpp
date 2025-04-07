@@ -17,6 +17,6 @@ void readStop(char * filePath, unordered_map<std::string, Arret>* stops);
 
 void readTrips(char* filePath, std::vector<Ligne>* lignes);
 
-void completeLignes(char* filePath, std::vector<Ligne>& lignes, std::unordered_map<std::string, Arret>& stops);
+void completeLignes(char* filePath, std::vector<Ligne>* lignes, std::unordered_map<std::string, Arret>& stops);
 
 #endif

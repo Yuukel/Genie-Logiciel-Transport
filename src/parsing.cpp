@@ -2,35 +2,35 @@
 #include "parsing.hpp"
 
 void readStop(char * filePath, unordered_map<std::string, Arret>* stops){
-    std::ifstream file(filePath);
+    ifstream file(filePath);
 
     if (!file.is_open()) {
-        std::cerr << "Erreur : Impossible d'ouvrir le fichier " << filePath << std::endl;
+        cerr << "Erreur : Impossible d'ouvrir le fichier " << filePath << endl;
         return;
     }
 
-    std::string line;
-    std::getline(file, line); // Lire la première ligne (en-tête) et l'ignorer
+    string line;
+    getline(file, line); // Lire la première ligne (en-tête) et l'ignorer
 
-    while (std::getline(file, line)) {
-        std::istringstream lineStream(line);
-        std::string cell;
-        std::vector<std::string> columns;
+    while (getline(file, line)) {
+        istringstream lineStream(line);
+        string cell;
+        vector<string> columns;
 
         // Lire chaque colonne séparée par une virgule
-        while (std::getline(lineStream, cell, ',')) {
+        while (getline(lineStream, cell, ',')) {
             columns.push_back(cell);
         }
 
         // Vérifier que la ligne contient suffisamment de colonnes
         if (columns.size() < 6) {
-            std::cerr << "Erreur : Ligne mal formatée ou incomplète." << std::endl;
+            cerr << "Erreur : Ligne mal formatée ou incomplète." << endl;
             continue;
         }
 
         // Extraire uniquement les colonnes souhaitées (par exemple, stop_id, stop_name, stop_lat, stop_lon)
-        std::string stopId = columns[0];
-        std::string stopName = columns[2];
+        string stopId = columns[0];
+        string stopName = columns[2];
 
         // Créer un objet Arret et l'ajouter à la map
         Arret arret(stopId, stopName);
@@ -41,11 +41,11 @@ void readStop(char * filePath, unordered_map<std::string, Arret>* stops){
     file.close();
 }
 
-void readTrips(char* filePath, std::vector<Ligne>* lignes) {
-    std::ifstream file(filePath);
+void readTrips(char* filePath, vector<Ligne>* lignes) {
+    ifstream file(filePath);
 
     if (!file.is_open()) {
-        std::cerr << "Erreur : Impossible d'ouvrir le fichier " << filePath << std::endl;
+        cerr << "Erreur : Impossible d'ouvrir le fichier " << filePath << endl;
         return;
     }
 
@@ -71,7 +71,7 @@ void readTrips(char* filePath, std::vector<Ligne>* lignes) {
         // Vérifier si cette ligne existe déjà
         if (ligneExistante.find(key) == ligneExistante.end()) {
             // Créer une nouvelle ligne
-            Ligne ligne(routeId, "Ligne " + routeId, tripHeadsign);
+            Ligne ligne(tripId, "Ligne " + routeId, tripHeadsign);
 
             // Ajouter la ligne au vecteur
             lignes->push_back(ligne);
@@ -84,7 +84,7 @@ void readTrips(char* filePath, std::vector<Ligne>* lignes) {
     file.close();
 }
 
-void completeLignes(char* filePath, std::vector<Ligne>& lignes, std::unordered_map<std::string, Arret>& stops) {
+void completeLignes(char* filePath, std::vector<Ligne>* lignes, std::unordered_map<std::string, Arret>& stops) {
     std::ifstream file(filePath);
 
     if (!file.is_open()) {
@@ -115,7 +115,7 @@ void completeLignes(char* filePath, std::vector<Ligne>& lignes, std::unordered_m
         Horaire horaire = {heure, minute};
 
         // Trouver la ligne correspondante en fonction de trip_id
-        for (auto& ligne : lignes) {
+        for (auto& ligne : *lignes) {
             // Vérifier si le trip_id correspond à la ligne (idLigne) et au terminus (tripHeadsign)
             if (tripId.find(ligne.idLigne) != std::string::npos && tripId.find(ligne.tripHeadsign) != std::string::npos) {
                 // Ajouter l'arrêt à la ligne
