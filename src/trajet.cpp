@@ -1,6 +1,6 @@
 #include "trajet.hpp"
 #include "arret.hpp"
-
+#include <iostream>
 
 ligne::ligne(std::string id, std::string nom, std::string headsign) {
     id_ligne = id;
@@ -22,8 +22,8 @@ void ligne::print() {
 
 void ligne::print_arrets() {
     printf("Arrets de la ligne :\n");
-    for (int i = 0; i < stops.size(); i++) {
-        printf("%s\n", stops[i]->stop_name.c_str());
+    for (int i = 0; i < stop_ids.size(); i++) {
+        printf("%s\n", stop_ids[i].c_str());
     }
 }
 
@@ -34,16 +34,16 @@ void ligne::print_horaires() {
     }
 }
 
-void ligne::add_arret(std::shared_ptr<arret> arret) {
-    stops.push_back(arret);
+void ligne::add_arret(std::string arret) {
+    stop_ids.push_back(arret);
 }
 
 void ligne::add_horaire(std::vector<horaire> horaire) {
     horaires.push_back(horaire);
 }
 
-std::vector<std::shared_ptr<arret>> ligne::get_arrets() {
-    return stops;
+std::vector<std::string> ligne::get_arrets() {
+    return stop_ids;
 }
 
 std::vector<std::vector<horaire>> ligne::get_horaires() {
@@ -59,25 +59,28 @@ int ligne::get_horaires_precis(horaire h, int arret) {
     return -1; // Si aucun horaire ne correspond, retourne -1
 }
 
-std::shared_ptr<arret> ligne::get_suivant(std::shared_ptr<arret> arret) {
-    for (int i = 0; i < stops.size(); i++) {
-        if (stops[i]->stop_id == arret->stop_id) {
-            if (i + 1 < stops.size()) {
-                return stops[i + 1]; // Retourne l'arrêt suivant
+std::string ligne::get_suivant(std::string arret) {
+    for (int i = 0; i < stop_ids.size(); i++) {
+        if (stop_ids[i] == arret) {
+            if (i + 1 < stop_ids.size()) {
+                return stop_ids[i + 1]; // Retourne l'arrêt suivant
             } else {
-                return nullptr; // Si c'est le dernier arrêt, retourne nullptr
+                return "-1"; // Si c'est le dernier arrêt, retourne nullptr
             }
         }
     }
-    return nullptr; // Si l'arrêt n'est pas trouvé, retourne nullptr
+    return "FIN"; // Si l'arrêt n'est pas trouvé, retourne nullptr
 }
 
-std::shared_ptr<arret> ligne::get_id_arret(std::shared_ptr<arret> arret) {
-    for (int i = 0; i < stops.size(); i++) {
-        if (stops[i]->stop_id == arret->stop_id) {
-            return stops[i]; // Retourne l'arrêt correspondant
+int ligne::get_ind_arret(std::string arret) {
+    for (int i = 0; i < stop_ids.size(); i++) {
+        if (stop_ids[i] == arret) {
+            return i; // Retourne l'arrêt correspondant
         }
     }
-    return nullptr; // Si l'arrêt n'est pas trouvé, retourne nullptr
+    return -1; // Si l'arrêt n'est pas trouvé, retourne nullptr
 }
+
+
+
 

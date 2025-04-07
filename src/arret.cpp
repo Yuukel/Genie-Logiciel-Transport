@@ -19,14 +19,14 @@ void arret::print(){
 void arret::print_lignes(){
     printf("Lignes qui passent par cet arret :\n");
     for (int i = 0; i < lignes.size(); i++){
-        printf("%s\n", lignes[i]->id_ligne.c_str());
+        printf("%s\n", lignes[i].c_str());
     }
 }
 
-void arret::add_ligne(std::shared_ptr<ligne> new_ligne){
+void arret::add_ligne(std::string new_ligne){// ajoute une id a la liste
     lignes.push_back(new_ligne);
 }
 
-std::vector<std::shared_ptr<ligne>> arret::get_lignes(){
+std::vector<std::string> arret::get_lignes(){
     return lignes;
 }
