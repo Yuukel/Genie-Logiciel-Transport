@@ -8,20 +8,22 @@
 #include <vector>
 #include <string>
 
-// Arret d'une ligne de transport en commun
-class arret {
-    public:
-    std::string stop_name; // nom de l'arret
-    std::string stop_id;   // unique à chaque arret
-    std::vector<std::string> lignes; // liste des IDs des lignes qui passent par cet arret
+using namespace std;
 
-    arret(std::string id, std::string nom); // constructeur
-    arret(); // constructeur par défaut
+// Arret d'une ligne de transport en commun
+class Arret {
+    public:
+    string stopName; // nom de l'arret
+    string stopId;   // unique à chaque arret
+    vector<string> lignes; // liste des IDs des lignes qui passent par cet arret
+
+    Arret(string id, string nom); // constructeur
+    Arret(); // constructeur par défaut
     
     void print(); // affiche les informations de l'arret
-    void print_lignes(); // affiche les lignes qui passent par cet arret
-    std::vector<std::string> get_lignes(); // liste des lignes qui passent par cet arret
-    void add_ligne(std::string ligne); // ajoute une ligne à la liste des lignes qui passent par cet arret 
+    void printLignes(); // affiche les lignes qui passent par cet arret
+    vector<string> getLignes(); // liste des lignes qui passent par cet arret
+    void addLigne(string ligne); // ajoute une ligne à la liste des lignes qui passent par cet arret 
 };
 
 #endif

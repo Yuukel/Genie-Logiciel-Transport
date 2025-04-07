@@ -1,32 +1,32 @@
 #include "arret.hpp"
 
 
-arret::arret(std::string id, std::string nom){
-    stop_id = id;
-    stop_name = nom;
+Arret::arret(string id, string nom){
+    stopId = id;
+    stopName = nom;
 }
 
-arret::arret(){
-    stop_id = "0";
-    stop_name = "Aucun nom";
+Arret::arret(){
+    stopId = "0";
+    stopName = "Aucun nom";
 }
 
-void arret::print(){
-    printf("\nArret : %s\n", stop_name.c_str());
-    printf("ID : %s\n", stop_id.c_str());
+void Arret::print(){
+    printf("\nArret : %s\n", stopName.c_str());
+    printf("ID : %s\n", stopId.c_str());
 }
 
-void arret::print_lignes(){
+void Arret::printLignes(){
     printf("Lignes qui passent par cet arret :\n");
     for (int i = 0; i < lignes.size(); i++){
         printf("%s\n", lignes[i].c_str());
     }
 }
 
-void arret::add_ligne(std::string new_ligne){// ajoute une id a la liste
-    lignes.push_back(new_ligne);
+void Arret::addLigne(string newLigne){// ajoute une id a la liste
+    lignes.push_back(newLigne);
 }
 
-std::vector<std::string> arret::get_lignes(){
+vector<string> Arret::getLignes(){
     return lignes;
 }

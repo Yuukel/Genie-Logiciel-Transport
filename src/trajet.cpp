@@ -2,55 +2,55 @@
 #include "arret.hpp"
 #include <iostream>
 
-ligne::ligne(std::string id, std::string nom, std::string headsign) {
-    id_ligne = id;
-    nom_ligne = nom;
-    trip_headsign = headsign;
+Ligne::ligne(string id, string nom, string headsign) {
+    idLigne = id;
+    nomLigne = nom;
+    tripHeadsign = headsign;
 }
 
-ligne::ligne() {
-    id_ligne = "0";
-    nom_ligne = "Aucun nom";
-    trip_headsign = "Aucun terminus";
+Ligne::ligne() {
+    idLigne = "0";
+    nomLigne = "Aucun nom";
+    tripHeadsign = "Aucun terminus";
 }
 
-void ligne::print() {
-    printf("\nLigne : %s\n", nom_ligne.c_str());
-    printf("ID : %s\n", id_ligne.c_str());
-    printf("Terminus : %s\n", trip_headsign.c_str());
+void Ligne::print() {
+    printf("\nLigne : %s\n", nomLigne.c_str());
+    printf("ID : %s\n", idLigne.c_str());
+    printf("Terminus : %s\n", tripHeadsign.c_str());
 }
 
-void ligne::print_arrets() {
+void Ligne::printArrets() {
     printf("Arrets de la ligne :\n");
-    for (int i = 0; i < stop_ids.size(); i++) {
-        printf("%s\n", stop_ids[i].c_str());
+    for (int i = 0; i < stopIds.size(); i++) {
+        printf("%s\n", stopIds[i].c_str());
     }
 }
 
-void ligne::print_horaires() {
+void Ligne::printHoraires() {
     printf("Horaires de la ligne :\n");
     for (int i = 0; i < horaires.size(); i++) {
         printf("%02d:%02d\n", horaires[i][0].heure, horaires[i][0].minute);
     }
 }
 
-void ligne::add_arret(std::string arret) {
-    stop_ids.push_back(arret);
+void Ligne::addArret(string arret) {
+    stopIds.push_back(arret);
 }
 
-void ligne::add_horaire(std::vector<horaire> horaire) {
+void Ligne::addHoraire(vector<Horaire> horaire) {
     horaires.push_back(horaire);
 }
 
-std::vector<std::string> ligne::get_arrets() {
-    return stop_ids;
+vector<string> Ligne::getArrets() {
+    return stopIds;
 }
 
-std::vector<std::vector<horaire>> ligne::get_horaires() {
+vector<vector<horaire>> Ligne::getHoraires() {
     return horaires;
 }
 
-int ligne::get_horaires_precis(horaire h, int arret) {
+int Ligne::getHorairesPrecis(Horaire h, int arret) {
     for (int i = 0; i < horaires.size(); i++) {
         if (horaires[i][arret].heure >= h.heure && horaires[i][arret].minute >= h.minute) {
             return i; // Retourne l'indice de l'horaire correspondant
@@ -59,11 +59,11 @@ int ligne::get_horaires_precis(horaire h, int arret) {
     return -1; // Si aucun horaire ne correspond, retourne -1
 }
 
-std::string ligne::get_suivant(std::string arret) {
-    for (int i = 0; i < stop_ids.size(); i++) {
-        if (stop_ids[i] == arret) {
-            if (i + 1 < stop_ids.size()) {
-                return stop_ids[i + 1]; // Retourne l'arrêt suivant
+string Ligne::getSuivant(string arret) {
+    for (int i = 0; i < stopIds.size(); i++) {
+        if (stopIds[i] == arret) {
+            if (i + 1 < stopIds.size()) {
+                return stopIds[i + 1]; // Retourne l'arrêt suivant
             } else {
                 return "-1"; // Si c'est le dernier arrêt, retourne nullptr
             }
@@ -72,9 +72,9 @@ std::string ligne::get_suivant(std::string arret) {
     return "FIN"; // Si l'arrêt n'est pas trouvé, retourne nullptr
 }
 
-int ligne::get_ind_arret(std::string arret) {
-    for (int i = 0; i < stop_ids.size(); i++) {
-        if (stop_ids[i] == arret) {
+int ligne::getIndArret(string arret) {
+    for (int i = 0; i < stopIds.size(); i++) {
+        if (stopIds[i] == arret) {
             return i; // Retourne l'arrêt correspondant
         }
     }
