@@ -25,6 +25,10 @@ void Ligne::printArrets() const{
     printf("Arrets de la ligne :\n");
     for (int i = 0; i < stopIds.size(); i++) {
         printf("%s\n", stopIds[i].c_str());
+        for(int j = 0 ; j < horaires[i].size() ; j++){
+            printf("%02d:%02d ", horaires[i][j].heure, horaires[i][j].minute);
+        }
+        printf("\n");
     }
 }
 

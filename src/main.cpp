@@ -33,7 +33,7 @@ int main(){
     // }
     lignes[0].print();
     lignes[0].printArrets();
-    lignes[0].printHoraires();
+    // lignes[0].printHoraires();
 
     return 0;
 }
