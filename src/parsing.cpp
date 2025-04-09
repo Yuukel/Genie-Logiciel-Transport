@@ -160,6 +160,11 @@ void completeLignes(char* filePath, std::vector<Ligne>* lignes, std::unordered_m
                 for (size_t i = 0; i < stopsAndHoraires.size(); ++i) {
                     const auto& [stopId, horaire] = stopsAndHoraires[i];
                     it->horaires[i].push_back(horaire);
+                    
+                    // Mettre à jour la map `stops` pour associer l'arrêt à la ligne
+                    if (stops->find(stopId) != stops->end()) {
+                        stops->at(stopId).addLigne(it->idLigne);
+                    }
                 }
             }
         }
