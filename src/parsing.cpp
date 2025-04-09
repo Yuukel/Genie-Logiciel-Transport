@@ -1,7 +1,7 @@
 
 #include "parsing.hpp"
 
-void readStop(char * filePath, unordered_map<std::string, Arret>* stops){
+void readStop(char * filePath, unordered_map<string, Arret>* stops){
     ifstream file(filePath);
 
     if (!file.is_open()) {
@@ -41,7 +41,7 @@ void readStop(char * filePath, unordered_map<std::string, Arret>* stops){
     file.close();
 }
 
-void readTrips(char* filePath, std::vector<Ligne>* lignes, std::unordered_map<std::string, std::string>& tripHeadsigns, std::unordered_map<std::string, std::string>& tripRouteIds) {
+void readTrips(char* filePath, vector<Ligne>* lignes, unordered_map<string, string>& tripHeadsigns, unordered_map<string, string>& tripRouteIds) {
     ifstream file(filePath);
 
     if (!file.is_open()) {
@@ -49,21 +49,21 @@ void readTrips(char* filePath, std::vector<Ligne>* lignes, std::unordered_map<st
         return;
     }
 
-    std::string line;
-    std::getline(file, line); // Lire la première ligne (en-tête) et l'ignorer
+    string line;
+    getline(file, line); // Lire la première ligne (en-tête) et l'ignorer
 
     // Map temporaire pour éviter les doublons (clé : route_id + trip_headsign)
-    std::unordered_map<std::string, bool> ligneExistante;
+    unordered_map<string, bool> ligneExistante;
 
-    while (std::getline(file, line)) {
-        std::istringstream lineStream(line);
-        std::string routeId, serviceId, tripId, tripHeadsign;
+    while (getline(file, line)) {
+        istringstream lineStream(line);
+        string routeId, serviceId, tripId, tripHeadsign;
 
         // Lire les colonnes nécessaires
-        std::getline(lineStream, routeId, ',');
-        std::getline(lineStream, serviceId, ',');
-        std::getline(lineStream, tripId, ',');
-        std::getline(lineStream, tripHeadsign, ',');
+        getline(lineStream, routeId, ',');
+        getline(lineStream, serviceId, ',');
+        getline(lineStream, tripId, ',');
+        getline(lineStream, tripHeadsign, ',');
 
         // Ajouter l'association tripId -> tripHeadsign
         tripHeadsigns[tripId] = tripHeadsign;
@@ -72,7 +72,7 @@ void readTrips(char* filePath, std::vector<Ligne>* lignes, std::unordered_map<st
         tripRouteIds[tripId] = routeId;
 
         // Générer une clé unique pour éviter les doublons
-        std::string key = routeId + "_" + tripHeadsign;
+        string key = routeId + "_" + tripHeadsign;
 
         // Vérifier si cette ligne existe déjà
         if (ligneExistante.find(key) == ligneExistante.end()) {
@@ -90,36 +90,36 @@ void readTrips(char* filePath, std::vector<Ligne>* lignes, std::unordered_map<st
     file.close();
 }
 
-void completeLignes(char* filePath, std::vector<Ligne>* lignes, std::unordered_map<std::string, Arret>* stops, std::unordered_map<std::string, std::string>& tripHeadsigns, std::unordered_map<std::string, std::string>& tripRouteIds) {
-    std::ifstream file(filePath);
+void completeLignes(char* filePath, vector<Ligne>* lignes, unordered_map<string, Arret>* stops, unordered_map<string, string>& tripHeadsigns, unordered_map<string, string>& tripRouteIds) {
+    ifstream file(filePath);
 
     if (!file.is_open()) {
-        std::cerr << "Erreur : Impossible d'ouvrir le fichier " << filePath << std::endl;
+        cerr << "Erreur : Impossible d'ouvrir le fichier " << filePath << endl;
         return;
     }
 
-    std::string line;
-    std::getline(file, line); // Lire la première ligne (en-tête) et l'ignorer
+    string line;
+    getline(file, line); // Lire la première ligne (en-tête) et l'ignorer
 
     // Map pour regrouper les arrêts et horaires par `trip_id`
-    std::unordered_map<std::string, std::vector<std::pair<std::string, Horaire>>> tripStops;
+    unordered_map<string, vector<pair<string, Horaire>>> tripStops;
 
     // Lire toutes les lignes du fichier et regrouper les arrêts par `trip_id`
-    while (std::getline(file, line)) {
-        std::istringstream lineStream(line);
-        std::string tripId, arrivalTime, departureTime, stopId, stopSequence;
+    while (getline(file, line)) {
+        istringstream lineStream(line);
+        string tripId, arrivalTime, departureTime, stopId, stopSequence;
 
         // Lire les colonnes nécessaires
-        std::getline(lineStream, tripId, ',');        // trip_id
-        std::getline(lineStream, arrivalTime, ',');   // arrival_time
-        std::getline(lineStream, departureTime, ','); // departure_time
-        std::getline(lineStream, stopId, ',');        // stop_id
-        std::getline(lineStream, stopSequence, ',');  // stop_sequence
+        getline(lineStream, tripId, ',');        // trip_id
+        getline(lineStream, arrivalTime, ',');   // arrival_time
+        getline(lineStream, departureTime, ','); // departure_time
+        getline(lineStream, stopId, ',');        // stop_id
+        getline(lineStream, stopSequence, ',');  // stop_sequence
 
         // Extraire l'heure et la minute de l'arrivée
         unsigned int heure, minute;
         if (sscanf(arrivalTime.c_str(), "%u:%u", &heure, &minute) != 2) {
-            std::cerr << "Erreur : Format d'heure invalide pour " << arrivalTime << std::endl;
+            cerr << "Erreur : Format d'heure invalide pour " << arrivalTime << endl;
             continue;
         }
         Horaire horaire = {heure, minute};
@@ -133,18 +133,18 @@ void completeLignes(char* filePath, std::vector<Ligne>* lignes, std::unordered_m
     // Parcourir chaque `trip_id` et comparer les séquences d'arrêts
     for (const auto& [tripId, stopsAndHoraires] : tripStops) {
         // Obtenir `route_id` et `tripHeadsign` pour ce `trip_id`
-        std::string routeId = tripRouteIds[tripId];
-        std::string tripHeadsign = tripHeadsigns[tripId];
+        string routeId = tripRouteIds[tripId];
+        string tripHeadsign = tripHeadsigns[tripId];
 
         // Trouver la ligne correspondante
-        auto it = std::find_if(lignes->begin(), lignes->end(), [&routeId, &tripHeadsign](const Ligne& ligne) {
+        auto it = find_if(lignes->begin(), lignes->end(), [&routeId, &tripHeadsign](const Ligne& ligne) {
             return ligne.nomLigne == "Ligne " + routeId && ligne.tripHeadsign == tripHeadsign;
         });
 
         if (it != lignes->end()) {
             // Comparer la séquence d'arrêts
             const auto& existingStops = it->stopIds;
-            std::vector<std::string> newStops;
+            vector<string> newStops;
             for (const auto& [stopId, _] : stopsAndHoraires) {
                 newStops.push_back(stopId);
             }
@@ -173,15 +173,15 @@ void completeLignes(char* filePath, std::vector<Ligne>* lignes, std::unordered_m
     removeDuplicateHoraire(lignes);
 }
 
-void removeDuplicateHoraire(std::vector<Ligne>* lignes) {
+void removeDuplicateHoraire(vector<Ligne>* lignes) {
     for (int i = 0; i < lignes->size(); i++) {
         for (int j = 0; j < lignes->at(i).horaires.size(); j++) {
             // Trier les horaires pour permettre la suppression des doublons
-            std::vector<Horaire>& horaires = lignes->at(i).horaires.at(j);
-            std::sort(horaires.begin(), horaires.end());
+            vector<Horaire>& horaires = lignes->at(i).horaires.at(j);
+            sort(horaires.begin(), horaires.end());
 
             // Supprimer les doublons dans les horaires
-            horaires.erase(std::unique(horaires.begin(), horaires.end()), horaires.end());
+            horaires.erase(unique(horaires.begin(), horaires.end()), horaires.end());
         }
     }
 }

@@ -12,14 +12,14 @@ Arret::Arret(){
 }
 
 void Arret::print() const{
-    printf("\nArret : %s ", stopName.c_str());
-    printf("ID : %s\n", stopId.c_str());
+    cout << stopName << endl;
+    cout << stopId << endl;
 }
 
 void Arret::printLignes() const{
-    printf("Lignes qui passent par cet arret :\n");
+    cout << "Lignes qui passent par cet arret" << endl;
     for (int i = 0; i < lignes.size(); i++){
-        printf("%s\n", lignes[i].c_str());
+        cout << lignes[i] << endl;
     }
 }
 
