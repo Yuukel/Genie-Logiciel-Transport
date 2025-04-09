@@ -10,6 +10,16 @@ using namespace std;
 struct Horaire {
     unsigned int heure;
     unsigned int minute;
+
+    // Surcharge de l'opérateur ==
+    bool operator==(const Horaire& other) const {
+        return heure == other.heure && minute == other.minute;
+    }
+
+    // Surcharge de l'opérateur <
+    bool operator<(const Horaire& other) const {
+        return (heure < other.heure) || (heure == other.heure && minute < other.minute);
+    }
 } typedef Horaire;
 
 class Ligne {

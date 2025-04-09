@@ -19,11 +19,7 @@ int main(){
      // Charger les lignes depuis trips.txt
     readTrips(tripsFilePath, &lignes, tripHeadsigns, tripRouteIds);
 
-    // Compléter les lignes avec les arrêts et horaires depuis stop_times.txt
-    completeLignes(stopTimesFilePath, &lignes, stops, tripHeadsigns, tripRouteIds);
-
-    // Supprimer les doublons d'arrêts
-    // removeDuplicateStops(&lignes);
+    completeLignes(stopTimesFilePath, &lignes, &stops, tripHeadsigns, tripRouteIds);
 
     // Afficher les informations des lignes
     // for (const auto& ligne : lignes) {

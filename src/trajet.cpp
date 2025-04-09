@@ -15,8 +15,11 @@ Ligne::Ligne() {
 }
 
 void Ligne::print() const{
-    printf("\nLigne : %s\n", nomLigne.c_str());
-    printf("ID : %s\n", idLigne.c_str());
+    cout << nomLigne << endl;
+    // printf("\nLigne : %s\n", nomLigne.c_str());
+    cout << idLigne << endl;
+    // printf("ID : %s\n", idLigne.c_str());
+    cout << tripHeadsign << endl;
     printf("Terminus : %s\n", tripHeadsign.c_str());
 }
 

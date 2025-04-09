@@ -90,7 +90,7 @@ void readTrips(char* filePath, std::vector<Ligne>* lignes, std::unordered_map<st
     file.close();
 }
 
-void completeLignes(char* filePath, std::vector<Ligne>* lignes, std::unordered_map<std::string, Arret>& stops, std::unordered_map<std::string, std::string>& tripHeadsigns, std::unordered_map<std::string, std::string>& tripRouteIds) {
+void completeLignes(char* filePath, std::vector<Ligne>* lignes, std::unordered_map<std::string, Arret>* stops, std::unordered_map<std::string, std::string>& tripHeadsigns, std::unordered_map<std::string, std::string>& tripRouteIds) {
     std::ifstream file(filePath);
 
     if (!file.is_open()) {
@@ -161,14 +161,22 @@ void completeLignes(char* filePath, std::vector<Ligne>* lignes, std::unordered_m
                     const auto& [stopId, horaire] = stopsAndHoraires[i];
                     it->horaires[i].push_back(horaire);
                 }
-            } else {
-                // Variante détectée, mais on peut décider de l'ajouter ou de l'ignorer
-                // std::cerr << "Variante détectée pour trip_id " << tripId << " (non ajoutée)." << std::endl;
             }
-        } else {
-            // Ligne non trouvée, ignorer
-            // std::cerr << "Erreur : Ligne introuvable pour trip_id " << tripId << std::endl;
+        }
+    }
+
+    removeDuplicateHoraire(lignes);
+}
+
+void removeDuplicateHoraire(std::vector<Ligne>* lignes) {
+    for (int i = 0; i < lignes->size(); i++) {
+        for (int j = 0; j < lignes->at(i).horaires.size(); j++) {
+            // Trier les horaires pour permettre la suppression des doublons
+            std::vector<Horaire>& horaires = lignes->at(i).horaires.at(j);
+            std::sort(horaires.begin(), horaires.end());
+
+            // Supprimer les doublons dans les horaires
+            horaires.erase(std::unique(horaires.begin(), horaires.end()), horaires.end());
         }
     }
 }
-
