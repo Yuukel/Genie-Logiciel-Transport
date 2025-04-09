@@ -16,30 +16,30 @@ Ligne::Ligne() {
 
 void Ligne::print() const{
     cout << nomLigne << endl;
-    // printf("\nLigne : %s\n", nomLigne.c_str());
     cout << idLigne << endl;
-    // printf("ID : %s\n", idLigne.c_str());
     cout << tripHeadsign << endl;
-    printf("Terminus : %s\n", tripHeadsign.c_str());
+    cout << "Terminus : " << tripHeadsign << endl;
 }
 
 void Ligne::printArrets() const{
-    printf("Nombres d'arrêts: %ld\n", stopIds.size());
-    printf("Arrets de la ligne :\n");
+    cout << "Nombre d'arrêts : " << stopIds.size() << endl;
+    cout << "Arrêts de la ligne :" << endl;
     for (int i = 0; i < stopIds.size(); i++) {
-        printf("%s\n", stopIds[i].c_str());
+        cout << stopIds[i] << endl;
         for(int j = 0 ; j < horaires[i].size() ; j++){
-            printf("%02d:%02d ", horaires[i][j].heure, horaires[i][j].minute);
+            cout << setfill('0') << setw(2) << horaires[i][j].heure << ":"
+            << setfill('0') << setw(2) << horaires[i][j].minute << " ";
         }
-        printf("\n");
+        cout << endl;
     }
 }
 
 void Ligne::printHoraires() const{
-    printf("Nombres d'horaires: %ld\n", horaires.size());
-    printf("Horaires de la ligne :\n");
+    cout << horaires.size() << endl;
+    cout << "Horaires de la ligne :" << endl;
     for (int i = 0; i < horaires.size(); i++) {
-        printf("%02d:%02d\n", horaires[i][0].heure, horaires[i][0].minute);
+        cout << setfill('0') << setw(2) << horaires[i][0].heure << ":"
+        << setfill('0') << setw(2) << horaires[i][0].minute << endl;
     }
 }
 
@@ -89,7 +89,3 @@ int Ligne::getIndArret(string arret) const{
     }
     return -1; // Si l'arrêt n'est pas trouvé, retourne nullptr
 }
-
-
-
-

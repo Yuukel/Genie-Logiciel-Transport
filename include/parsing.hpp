@@ -14,11 +14,11 @@
 
 using namespace std;
 
-void readStop(char * filePath, unordered_map<std::string, Arret>* stops);
+void readStop(char * filePath, unordered_map<string, Arret>* stops);
 
-void readTrips(char* filePath, std::vector<Ligne>* lignes, std::unordered_map<std::string, std::string>& tripHeadsigns, std::unordered_map<std::string, std::string>& tripRouteIds);
+void readTrips(char* filePath, vector<Ligne>* lignes, unordered_map<string, string>& tripHeadsigns, unordered_map<string, string>& tripRouteIds);
 
-void completeLignes(char* filePath, std::vector<Ligne>* lignes, std::unordered_map<std::string, Arret>* stops, std::unordered_map<std::string, std::string>& tripHeadsigns, std::unordered_map<std::string, std::string>& tripRouteIds);
+void completeLignes(char* filePath, vector<Ligne>* lignes, unordered_map<string, Arret>* stops, unordered_map<string, string>& tripHeadsigns, unordered_map<string, string>& tripRouteIds);
 
 void removeDuplicateHoraire(vector<Ligne>* lignes);
 
