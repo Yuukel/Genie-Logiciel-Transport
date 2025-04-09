@@ -162,7 +162,7 @@ void completeLignes(char* filePath, vector<Ligne>* lignes, unordered_map<string,
                     it->horaires[i].push_back(horaire);
                     
                     // Mettre à jour la map `stops` pour associer l'arrêt à la ligne
-                    if (stops->find(stopId) != stops->end()) {
+                    if (stops->find(stopId) != stops->end() && find(stops->at(stopId).lignes.begin(), stops->at(stopId).lignes.end(), it->idLigne) == stops->at(stopId).lignes.end()) {
                         stops->at(stopId).addLigne(it->idLigne);
                     }
                 }

@@ -21,6 +21,12 @@ int main(){
 
     completeLignes(stopTimesFilePath, &lignes, &stops, tripHeadsigns, tripRouteIds);
 
+    for(auto it = stops.begin(); it != stops.end(); ++it) {
+        std::cout << "ID de l'arrêt : " << it->first << std::endl;
+        it->second.print(); // Afficher les informations de l'arrêt
+        it->second.printLignes(); // Afficher les lignes associées à chaque arrêt
+    }
+
     // Afficher les informations des lignes
     // for (const auto& ligne : lignes) {
     //     ligne.print();

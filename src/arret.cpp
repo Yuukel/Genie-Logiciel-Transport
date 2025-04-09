@@ -21,6 +21,7 @@ void Arret::printLignes() const{
     for (int i = 0; i < lignes.size(); i++){
         cout << lignes[i] << endl;
     }
+    cout << endl;
 }
 
 void Arret::addLigne(string newLigne){// ajoute une id a la liste
