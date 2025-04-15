@@ -74,7 +74,7 @@ string Ligne::getSuivant(string arret) const{
             if (i + 1 < stopIds.size()) {
                 return stopIds[i + 1]; // Retourne l'arrêt suivant
             } else {
-                return "-1"; // Si c'est le dernier arrêt, retourne nullptr
+                return "-1"; // Si c'est le dernier arrêt, renvoie -1
             }
         }
     }

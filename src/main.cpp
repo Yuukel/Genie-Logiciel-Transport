@@ -8,6 +8,11 @@ std::unordered_map<std::string, Arret> stops; // Map des arrêts (stop_id -> sto
 std::unordered_map<std::string, std::string> tripHeadsigns;
 std::unordered_map<std::string, std::string> tripRouteIds;
 
+
+// Variables pour l'algorithme de Dijkstra
+vector<Noeud> arretsVoisin; //les voisins direct des arret deja visites
+vector<string> arretsVisites; // liste des arrets deja visites
+
 int main(){
     char stopsFilePath[] = "data/stops.txt";
     char tripsFilePath[] = "data/trips.txt";
