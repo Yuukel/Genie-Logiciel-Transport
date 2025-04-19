@@ -16,6 +16,11 @@ struct Noeud{
     Noeud(string id, string name, string ligne); // constructeur
 };
 
+int Deja_visite(string id, vector<string>* arretsVisites);
+int Dans_voisins(string id, vector<Noeud>* arretsVoisin);
+int Dans_lignes(string id, vector<Ligne>* arretsLignes);
+
+
 Noeud Dijktra(string depart, string arrivee, horaire heure, unordered_map<std::string, Arret>* stops, unordered_map<std::string, Arret>* lignes );
 
 int Deja_visite(string id, vector<string>* arretsVisites);
