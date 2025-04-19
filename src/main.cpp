@@ -1,6 +1,7 @@
 #include "trajet.hpp"
 #include "arret.hpp"
 #include "parsing.hpp"
+#include "dijkstra.hpp"
 
 // Conteneurs globaux pour stocker les objets
 std::vector<Ligne> lignes; // Liste des lignes
