@@ -1,7 +1,7 @@
 #include "trajet.hpp"
 #include "arret.hpp"
 #include "parsing.hpp"
-// #include "dijkstra.hpp"
+#include "dijkstra.hpp"
 #include "cli.hpp"
 
 // Conteneurs globaux pour stocker les objets
@@ -28,11 +28,13 @@ int main(){
 
     completeLignes(stopTimesFilePath, &lignes, &stops, tripHeadsigns, tripRouteIds);
 
+    /*
     for(auto it = stops.begin(); it != stops.end(); ++it) {
         std::cout << "ID de l'arrêt : " << it->first << std::endl;
         it->second.print(); // Afficher les informations de l'arrêt
         it->second.printLignes(); // Afficher les lignes associées à chaque arrêt
     }
+    */
 
     // Afficher les informations des lignes
     // for (const auto& ligne : lignes) {
@@ -40,15 +42,19 @@ int main(){
     //     ligne.printArrets();
     //     ligne.printHoraires();
     // }
-    lignes[0].print();
-    lignes[0].printArrets();
+    //lignes[0].print();
+    //lignes[0].printArrets();
     // lignes[0].printHoraires();
 
     // Exemple de nœuds reliés à la main avec stopName et nomLigne
+    Horaire h1 = {8, 30};
+    string depart = "0:PEgrou1"; // ID de l'arrêt de départ
+    string arrivee = "0:BXcayr1"; // ID de l'arrêt d'arrivée
+    Noeud Fin = Dijktra(depart, arrivee, h1, &stops, &lignes, &arretsVoisin, &arretsVisites);
     Noeud noeud1("Naïades", "Ligne 1", nullptr, {8, 30}); // Départ
     Noeud noeud2("Arrêt B", "Ligne 1", &noeud1, {8, 40}); // Arrêt intermédiaire sur la même ligne
     Noeud noeud3("Arrêt C", "Ligne 1", &noeud2, {8, 50}); // Arrêt intermédiaire sur la même ligne
-    Noeud noeud4("Nautica", "Ligne 2", &noeud3, {9, 10}); // Arrivée avec changement de ligne
+    Noeud noeud4("Nautica", "Ligne 2", &noeud3, {9, 10}); // Arrivée avec changement de ligne 
 
     // Construire le chemin à partir des nœuds
     std::vector<Noeud> chemin;
@@ -67,7 +73,7 @@ int main(){
     }
 
     // Afficher le chemin
-    afficherChemin(chemin, indicesChangement);
+    //afficherChemin(chemin, indicesChangement);
 
 
     return 0;

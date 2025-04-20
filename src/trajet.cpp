@@ -61,7 +61,7 @@ vector<vector<Horaire>> Ligne::getHoraires() const{
 
 int Ligne::getHorairesPrecis(Horaire h, int arret) const{
     for (int i = 0; i < horaires.size(); i++) {
-        if (horaires[i][arret].heure >= h.heure && horaires[i][arret].minute >= h.minute) {
+        if (horaires[i][arret].heure >= h.heure || horaires[i][arret].heure == h.heure && horaires[i][arret].minute >= h.minute) {
             return i; // Retourne l'indice de l'horaire correspondant
         }
     }

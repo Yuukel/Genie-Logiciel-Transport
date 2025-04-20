@@ -5,6 +5,7 @@
 #include <string>
 #include <unordered_map>
 #include <iomanip>
+#include <iostream>
 
 using namespace std;
 
@@ -21,6 +22,16 @@ struct Horaire {
     bool operator<(const Horaire& other) const {
         return (heure < other.heure) || (heure == other.heure && minute < other.minute);
     }
+
+    // Surcharge de l'opérateur >
+    bool operator>(const Horaire& other) const {
+        return (heure > other.heure) || (heure == other.heure && minute > other.minute);
+    }
+ 
+    void operator=(const Horaire& other) {
+        heure = other.heure;
+minute = other.minute;
+        }
 } typedef Horaire;
 
 // Copie Dijkstra.hpp (à retirer si on test Dijkstra)
@@ -30,13 +41,25 @@ struct Noeud {
     Noeud* precedent; // nœud précédent dans le chemin le plus court
     Horaire heure; // heure de passage à cet arrêt
 
-    // Constructeur existant
-    Noeud(string id, string name, string ligne);
+    // Constructeur par défaut
+  Noeud() : arretId("Vide"), ligneId(""), precedent(nullptr), heure({0, 0}) {};
 
     // Nouveau constructeur avec l'arg horaire
     Noeud(string id, string ligne, Noeud* prec, Horaire h)
         : arretId(id), ligneId(ligne), precedent(prec), heure(h) {}
-};
+
+
+        void operator=(const Noeud& other){
+            arretId = other.arretId;
+            ligneId = other.ligneId;
+            precedent = other.precedent;
+            heure = other.heure;
+        }
+     
+        void print(){
+            cout << "Arret: " << arretId << ", Ligne: " << ligneId << ", Heure: " << setfill('0') << setw(2) << heure.heure << ":" << setfill('0') << setw(2) << heure.minute << endl;
+            }
+        };
 
 class Ligne {
     public:
@@ -61,6 +84,7 @@ class Ligne {
     string getSuivant(string arret) const; // retourne l'arrêt suivant de la ligne
     int getIndArret(string arret) const; // retourne l'indice de l'arrêt
     Horaire getDernierHoraire(int arret) const; // renvoie l'horaire du dernier passage à l'arrêt donné
+ // retourne l'indice de l'arrêt
 };
 
 #endif

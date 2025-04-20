@@ -10,7 +10,7 @@ EXE = main.exe
 $(EXE): main.o trajet.o arret.o parsing.o cli.o
 	$(CC) $(OBJ)* -o $@
 
-main.o: trajet.o arret.o parsing.o cli.o
+main.o: trajet.o arret.o parsing.o cli.o dijkstra.o
 	$(CC) $(SRC)main.cpp -I $(INC) -c -o $(OBJ)$@
 
 trajet.o:
@@ -22,8 +22,8 @@ arret.o:
 parsing.o:
 	$(CC) $(SRC)parsing.cpp -I $(INC) -c -o $(OBJ)$@
 
-# dijkstra.o:
-# 	$(CC) $(SRC)dijkstra.cpp -I $(INC) -c -o $(OBJ)$@
+dijkstra.o:
+	$(CC) $(SRC)dijkstra.cpp -I $(INC) -c -o $(OBJ)$@
 
 cli.o:
 	$(CC) $(SRC)cli.cpp -I $(INC) -c -o $(OBJ)$@
