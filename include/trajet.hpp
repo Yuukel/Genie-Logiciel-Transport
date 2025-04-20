@@ -60,6 +60,7 @@ class Ligne {
     int getHorairesPrecis(Horaire ,int) const; // donne l'indice de l'horaire qui passe après l'horaire donné à l'arrêt donné
     string getSuivant(string arret) const; // retourne l'arrêt suivant de la ligne
     int getIndArret(string arret) const; // retourne l'indice de l'arrêt
+    Horaire getDernierHoraire(int arret) const; // renvoie l'horaire du dernier passage à l'arrêt donné
 };
 
 #endif

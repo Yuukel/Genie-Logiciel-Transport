@@ -68,6 +68,14 @@ int Ligne::getHorairesPrecis(Horaire h, int arret) const{
     return -1; // Si aucun horaire ne correspond, retourne -1
 }
 
+Horaire Ligne::getDernierHoraire(int arret) const{
+    if (arret >= 0 && arret < horaires.size()) {
+        return horaires[arret].back(); // Retourne le dernier horaire de l'arrêt
+    } else {
+        return {0, 0}; // Si l'arrêt n'est pas valide, retourne un horaire par défaut
+    }
+}
+
 string Ligne::getSuivant(string arret) const{
     for (int i = 0; i < stopIds.size(); i++) {
         if (stopIds[i] == arret) {
