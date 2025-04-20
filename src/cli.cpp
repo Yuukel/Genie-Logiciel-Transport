@@ -96,7 +96,7 @@ void afficherChemin(const vector<Noeud>& chemin, const vector<int>& indicesChang
 
         // Vérifier si un changement de ligne est nécessaire
         if (find(indicesChangement.begin(), indicesChangement.end(), static_cast<int>(i)) != indicesChangement.end()) {
-            cout << "  ** Changement de ligne nécessaire **" << endl;
+            cout << "  ** Changement de ligne à la prochaine étape**" << endl;
         }
 
         cout << endl; // Espacement entre les étapes

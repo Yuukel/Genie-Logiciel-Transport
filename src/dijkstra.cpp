@@ -62,7 +62,7 @@ Noeud Dijktra(string depart, string arrivee, Horaire heure, unordered_map<std::s
     // Variable utile dans le while
     
     //utile pour le premier for
-    Horaire h;                                                  //   <-- ici ce trouve la ligne 69 colonne 69
+    Horaire h;                                                  //   <-- ici ce trouve la ligne 69 colonne 69 (c'est faux)
     string tempoLigne;
     string tempoArret;
     noeud tempo ;
