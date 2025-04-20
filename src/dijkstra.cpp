@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Noeud::Noeud(string id,string ligne, Noeud* prec, Horaire h,){
+Noeud::Noeud(string id,string ligne, Noeud* prec, Horaire h){
     arretId = id;
     ligneId = ligne;
     precedent = prec; // precedent = nullptr si c'est le premier noeud
@@ -40,7 +40,7 @@ int Dans_lignes(string id, vector<Ligne>* arretsLignes){
     return -1; // l'arret n'est pas dans la liste
 }
 
-Noeud Dijktra(string depart, string arrivee, horaire heure, unordered_map<std::string, Arret>* stops, vector<Ligne>* lignes,vector<Noeud>* arretsVoisin, vector<string>* arretsVisites ){
+Noeud Dijktra(string depart, string arrivee, Horaire heure, unordered_map<std::string, Arret>* stops, vector<Ligne>* lignes,vector<Noeud>* arretsVoisin, vector<string>* arretsVisites ){
     // Dijkstra's algorithm to find the shortest path between two stops
     // depart : id de l'arret de depart
     // arrivee : id de l'arret d'arrivee

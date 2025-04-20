@@ -23,6 +23,21 @@ struct Horaire {
     }
 } typedef Horaire;
 
+// Copie Dijkstra.hpp (à retirer si on test Dijkstra)
+struct Noeud {
+    string arretId; // id de l'arrêt
+    string ligneId; // par quelle ligne on passe
+    Noeud* precedent; // nœud précédent dans le chemin le plus court
+    Horaire heure; // heure de passage à cet arrêt
+
+    // Constructeur existant
+    Noeud(string id, string name, string ligne);
+
+    // Nouveau constructeur avec l'arg horaire
+    Noeud(string id, string ligne, Noeud* prec, Horaire h)
+        : arretId(id), ligneId(ligne), precedent(prec), heure(h) {}
+};
+
 class Ligne {
     public:
     string idLigne;
