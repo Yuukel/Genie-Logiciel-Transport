@@ -106,8 +106,8 @@ Noeud Dijktra(string depart, string arrivee, Horaire heure, unordered_map<std::s
             if(indexLigne != -1){ // si la ligne existe
                 tempoLigne = (*lignes)[indexLigne].idLigne; // on recupere l'id de la ligne
                 tempoArret = (*lignes)[indexLigne].getSuivant(dernierTraite.arretId); // on recupere l'arret suivant de la ligne
-                if(tempoArret == "FIN") continue; // si l'arret suivant est le dernier arret de la ligne, on passe au voisin suivant
-                if(Deja_visite(tempoArret, arretsVisites) != -1) continue; // si l'arret est deja visite, on passe au voisin suivant
+                if(tempoArret == "FIN"){cout << "c'est un terminus" << endl; continue;} // si l'arret suivant est le dernier arret de la ligne, on passe au voisin suivant
+                if(Deja_visite(tempoArret, arretsVisites) != -1){cout << "deja visite..." << endl; continue;} // si l'arret est deja visite, on passe au voisin suivant
                 if(tempoArret != "-1"){ // si l'arret suivant n'est pas le dernier arret de la ligne
                     indexArret = (*lignes)[indexLigne].getIndArret(tempoArret); // on recupere l'indice de l'arret
                     indexHeure = (*lignes)[indexLigne].getHorairesPrecis(dernierTraite.heure, indexArret); // on recupere l'heure de passage a cet arret
@@ -120,6 +120,7 @@ Noeud Dijktra(string depart, string arrivee, Horaire heure, unordered_map<std::s
                         indexVoisin = Dans_voisins(tempoArret, arretsVoisins); // on cherche si l'arret est deja dans la liste des voisins
                         if(indexVoisin != -1){ // si l'arret est dans la liste des voisins 
                             // on compare les heures de passage
+                            cout << "l'arret est deja dans la liste" << endl;
                             if((*arretsVoisins)[indexVoisin].heure < h) continue; // si l'heure de passage est plus grande que l'heure du voisin, on passe au voisin suivant
                             (*arretsVoisins)[indexVoisin].heure = h; // on met a jour l'heure de passage du voisin
                             (*arretsVoisins)[indexVoisin].precedent = &dernierTraite; // on met a jour le precedent du voisin
@@ -130,7 +131,9 @@ Noeud Dijktra(string depart, string arrivee, Horaire heure, unordered_map<std::s
                         
                     }
                 }
+                else cout << "l'arret n'est pas dans la liste bizarre" << endl;
             }
+            else cout << "la ligne n'est pas dans la liste" << endl; // si la ligne n'est pas dans la liste, on passe au voisin suivant
         }
 
         // on cherche le voisin avec la plus petite heure de passage (normalement le premier de la liste)
@@ -169,6 +172,7 @@ Noeud Dijktra(string depart, string arrivee, Horaire heure, unordered_map<std::s
         arretsVisites->push_back(dernierTraite.arretId); // on ajoute le dernier aux arrets visites
 
         dernierTraite = tempo; // on met a jour le dernier noeud traite
+        lignesDirect = (*stops)[tempo.arretId].getLignes();
 
     }
 
