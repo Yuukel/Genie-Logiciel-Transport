@@ -38,14 +38,14 @@ minute = other.minute;
 struct Noeud {
     string arretId; // id de l'arrêt
     string ligneId; // par quelle ligne on passe
-    Noeud* precedent; // nœud précédent dans le chemin le plus court
+    int precedent; // indice du nœud précédent dans le chemin le plus court
     Horaire heure; // heure de passage à cet arrêt
 
     // Constructeur par défaut
-  Noeud() : arretId("Vide"), ligneId(""), precedent(nullptr), heure({0, 0}) {};
+  Noeud() : arretId("Vide"), ligneId(""), precedent(-1), heure({0, 0}) {};
 
     // Nouveau constructeur avec l'arg horaire
-    Noeud(string id, string ligne, Noeud* prec, Horaire h)
+    Noeud(string id, string ligne, int prec, Horaire h)
         : arretId(id), ligneId(ligne), precedent(prec), heure(h) {}
 
 
@@ -86,5 +86,7 @@ class Ligne {
     Horaire getDernierHoraire(int arret) const; // renvoie l'horaire du dernier passage à l'arrêt donné
  // retourne l'indice de l'arrêt
 };
+
+int trouveLigne(string id, vector<Ligne>* lignes); // retourne l'indice de la ligne dans le tableau des lignes
 
 #endif

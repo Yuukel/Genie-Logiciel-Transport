@@ -13,7 +13,7 @@ std::unordered_map<std::string, std::string> tripRouteIds;
 
 // Variables pour l'algorithme de Dijkstra
 vector<Noeud> arretsVoisin; //les voisins direct des arret deja visites
-vector<string> arretsVisites; // liste des arrets deja visites
+vector<Noeud> arretsVisites; // liste des arrets deja visites
 
 int main(){
     char stopsFilePath[] = "data/stops.txt";
@@ -51,19 +51,15 @@ int main(){
     string depart = "0:PEgrou1"; // ID de l'arrêt de départ
     string arrivee = "0:BXcayr1"; // ID de l'arrêt d'arrivée
     Noeud Fin = Dijktra(depart, arrivee, h1, &stops, &lignes, &arretsVoisin, &arretsVisites);
-    Noeud noeud1("Naïades", "Ligne 1", nullptr, {8, 30}); // Départ
-    Noeud noeud2("Arrêt B", "Ligne 1", &noeud1, {8, 40}); // Arrêt intermédiaire sur la même ligne
-    Noeud noeud3("Arrêt C", "Ligne 1", &noeud2, {8, 50}); // Arrêt intermédiaire sur la même ligne
-    Noeud noeud4("Nautica", "Ligne 2", &noeud3, {9, 10}); // Arrivée avec changement de ligne 
 
     // Construire le chemin à partir des nœuds
     std::vector<Noeud> chemin;
-    Noeud* current = &noeud4;
-    while (current != nullptr) {
-        chemin.insert(chemin.begin(), *current); // Ajouter le nœud au début du chemin
-        current = current->precedent;
+    Noeud current = Fin;
+    while (current.precedent != -1) {
+        chemin.insert(chemin.begin(), current); // Ajouter le nœud au début du chemin
+        current = arretsVisites[current.precedent];
     }
-
+    chemin.insert(chemin.begin(), arretsVisites[0]); // Ajouter le nœud de départ
     // Identifier les indices de changement de ligne
     std::vector<int> indicesChangement;
     for (size_t i = 1; i < chemin.size(); ++i) {
@@ -73,7 +69,7 @@ int main(){
     }
 
     // Afficher le chemin
-    //afficherChemin(chemin, indicesChangement);
+    afficherChemin(chemin, indicesChangement, &stops, &lignes);
 
 
     return 0;

@@ -9,6 +9,6 @@
 #include "dijkstra.hpp"
 #include "trajet.hpp"
 
-void afficherChemin(const std::vector<Noeud>& chemin, const std::vector<int>& indicesChangement);
+void afficherChemin(const std::vector<Noeud>& chemin, const std::vector<int>& indicesChangement ,unordered_map<std::string, Arret>* stops, vector<Ligne>* lignes);
 
 #endif

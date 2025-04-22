@@ -17,11 +17,11 @@ struct Noeud{
     Noeud(string id, string name, string ligne,Horaire h); // constructeur
 }typedef Noeud;
 */
-int Deja_visite(string id, vector<string>* arretsVisites);
+int Deja_visite(string id, vector<Noeud>* arretsVisites);
 int Dans_voisins(string id, vector<Noeud>* arretsVoisin);
 int Dans_lignes(string id, vector<Ligne>* arretsLignes);
 
 
-Noeud Dijktra(string depart, string arrivee, Horaire heure, unordered_map<std::string, Arret>* stops, vector<Ligne>* lignes,vector<Noeud>* arretsVoisin, vector<string>* arretsVisites );
+Noeud Dijktra(string depart, string arrivee, Horaire heure, unordered_map<std::string, Arret>* stops, vector<Ligne>* lignes,vector<Noeud>* arretsVoisin, vector<Noeud>* arretsVisites );
 
 #endif
