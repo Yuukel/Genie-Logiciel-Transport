@@ -32,6 +32,11 @@ void readStop(char * filePath, unordered_map<string, Arret>* stops){
         string stopId = columns[0];
         string stopName = columns[2];
 
+        // Ignorer les arrêts dont l'ID commence par '1' car ils n'ont pas de lignes qui passent par eux
+        if (!stopId.empty() && stopId[0] == '1') {
+            continue;
+        }
+
         // Créer un objet Arret et l'ajouter à la map
         Arret arret(stopId, stopName);
         (*stops)[stopId] = arret;

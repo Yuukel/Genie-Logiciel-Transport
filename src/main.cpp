@@ -5,15 +5,15 @@
 #include "cli.hpp"
 
 // Conteneurs globaux pour stocker les objets
-std::vector<Ligne> lignes; // Liste des lignes
-std::unordered_map<std::string, Arret> stops; // Map des arrêts (stop_id -> stop_name)
-std::unordered_map<std::string, std::string> tripHeadsigns;
-std::unordered_map<std::string, std::string> tripRouteIds;
+vector<Ligne> lignes; // Liste des lignes
+unordered_map<string, Arret> stops; // Map des arrêts (stop_id -> stop_name)
+unordered_map<string, string> tripHeadsigns;
+unordered_map<string, string> tripRouteIds;
 
 
 // Variables pour l'algorithme de Dijkstra
 vector<Noeud> arretsVoisin; //les voisins direct des arret deja visites
-vector<string> arretsVisites; // liste des arrets deja visites
+vector<Noeud> arretsVisites; // liste des arrets deja visites
 
 int main(){
     char stopsFilePath[] = "data/stops.txt";
@@ -30,7 +30,7 @@ int main(){
 
     /*
     for(auto it = stops.begin(); it != stops.end(); ++it) {
-        std::cout << "ID de l'arrêt : " << it->first << std::endl;
+        cout << "ID de l'arrêt : " << it->first << endl;
         it->second.print(); // Afficher les informations de l'arrêt
         it->second.printLignes(); // Afficher les lignes associées à chaque arrêt
     }
@@ -48,24 +48,29 @@ int main(){
 
     // Exemple de nœuds reliés à la main avec stopName et nomLigne
     Horaire h1 = {8, 30};
-    string depart = "0:PEgrou1"; // ID de l'arrêt de départ
-    string arrivee = "0:BXcayr1"; // ID de l'arrêt d'arrivée
+    // Entrée utilisateur pour le départ et l'arrivée
+    string departName, arriveeName;
+    cout << "Entrez le nom de l'arrêt de départ : ";
+    getline(cin, departName);
+    cout << "Entrez le nom de l'arrêt d'arrivée : ";
+    getline(cin, arriveeName);
+    string depart = getStopIdByName(departName, stops);
+    string arrivee = getStopIdByName(arriveeName, stops);
+
+    // string depart = "0:PEgrou1"; // ID de l'arrêt de départ
+    // string arrivee = "0:BXcayr1"; // ID de l'arrêt d'arrivée
     Noeud Fin = Dijktra(depart, arrivee, h1, &stops, &lignes, &arretsVoisin, &arretsVisites);
-    Noeud noeud1("Naïades", "Ligne 1", nullptr, {8, 30}); // Départ
-    Noeud noeud2("Arrêt B", "Ligne 1", &noeud1, {8, 40}); // Arrêt intermédiaire sur la même ligne
-    Noeud noeud3("Arrêt C", "Ligne 1", &noeud2, {8, 50}); // Arrêt intermédiaire sur la même ligne
-    Noeud noeud4("Nautica", "Ligne 2", &noeud3, {9, 10}); // Arrivée avec changement de ligne 
 
     // Construire le chemin à partir des nœuds
-    std::vector<Noeud> chemin;
-    Noeud* current = &noeud4;
-    while (current != nullptr) {
-        chemin.insert(chemin.begin(), *current); // Ajouter le nœud au début du chemin
-        current = current->precedent;
+    vector<Noeud> chemin;
+    Noeud current = Fin;
+    while (current.precedent != -1) {
+        chemin.insert(chemin.begin(), current); // Ajouter le nœud au début du chemin
+        current = arretsVisites[current.precedent];
     }
-
+    chemin.insert(chemin.begin(), arretsVisites[0]); // Ajouter le nœud de départ
     // Identifier les indices de changement de ligne
-    std::vector<int> indicesChangement;
+    vector<int> indicesChangement;
     for (size_t i = 1; i < chemin.size(); ++i) {
         if (chemin[i].ligneId != chemin[i - 1].ligneId) {
             indicesChangement.push_back(i - 1);
@@ -73,7 +78,7 @@ int main(){
     }
 
     // Afficher le chemin
-    //afficherChemin(chemin, indicesChangement);
+    afficherChemin(chemin, indicesChangement, &stops, &lignes);
 
 
     return 0;

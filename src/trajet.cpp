@@ -97,3 +97,12 @@ int Ligne::getIndArret(string arret) const{
     }
     return -1; // Si l'arrêt n'est pas trouvé, retourne nullptr
 }
+
+int trouveLigne(string id, vector<Ligne>* lignes){
+    for (int i = 0; i < lignes->size(); i++) {
+        if ((*lignes)[i].idLigne == id) {
+            return i; // Retourne l'indice de la ligne trouvée
+        }
+    }
+    return -1; // Si la ligne n'est pas trouvée, retourne -1
+}
