@@ -79,7 +79,17 @@
 //     cout << endl;
 // }
 
-void afficherChemin(const vector<Noeud>& chemin, const vector<int>& indicesChangement, unordered_map<std::string, Arret>* stops, vector<Ligne>* lignes) {
+string getStopIdByName(const string& stopName, const unordered_map<string, Arret>& stops) {
+    for (const auto& stop : stops) {
+        if (stop.second.stopName == stopName) {
+            return stop.first; // Retourne l'ID de l'arrêt
+        }
+    }
+    cerr << "Erreur : Aucun arrêt trouvé pour le nom '" << stopName << "'." << endl;
+    return ""; // Retourne une chaîne vide si aucun arrêt n'est trouvé
+}
+
+void afficherChemin(const vector<Noeud>& chemin, const vector<int>& indicesChangement, unordered_map<string, Arret>* stops, vector<Ligne>* lignes) {
     if (chemin.empty()) {
         cout << "Aucun chemin trouvé entre les arrêts spécifiés." << endl;
         return;
