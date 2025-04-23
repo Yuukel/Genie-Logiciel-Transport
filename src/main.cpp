@@ -28,26 +28,26 @@ int main(){
 
     completeLignes(stopTimesFilePath, &lignes, &stops, tripHeadsigns, tripRouteIds);
 
-    /*
-    for(auto it = stops.begin(); it != stops.end(); ++it) {
-        cout << "ID de l'arrêt : " << it->first << endl;
-        it->second.print(); // Afficher les informations de l'arrêt
-        it->second.printLignes(); // Afficher les lignes associées à chaque arrêt
-    }
-    */
+    // Afficher les informations des arrêts
+    // for(auto it = stops.begin(); it != stops.end(); ++it) {
+    //     cout << "ID de l'arrêt : " << it->first << endl;
+    //     it->second.print(); // Afficher les informations de l'arrêt
+    //     it->second.printLignes(); // Afficher les lignes associées à chaque arrêt
+    // }
+    
 
     // Afficher les informations des lignes
-    // for (const auto& ligne : lignes) {
-    //     ligne.print();
-    //     ligne.printArrets();
-    //     ligne.printHoraires();
-    // }
+    for (const auto& ligne : lignes) {
+        ligne.print();
+        ligne.printArrets();
+        ligne.printHoraires();
+    }
     //lignes[0].print();
     //lignes[0].printArrets();
     // lignes[0].printHoraires();
 
     // Exemple de nœuds reliés à la main avec stopName et nomLigne
-    Horaire h1 = {8, 30};
+    Horaire h1 = {7, 0};
     // Entrée utilisateur pour le départ et l'arrivée
     string departName, arriveeName;
     cout << "Entrez le nom de l'arrêt de départ : ";
