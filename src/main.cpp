@@ -22,7 +22,7 @@ int main(){
 
     // Charger les arrêts depuis le fichier stops.txt
     readStop(stopsFilePath, &stops);
- 
+
      // Charger les lignes depuis trips.txt
     readTrips(tripsFilePath, &lignes, tripHeadsigns, tripRouteIds);
 
@@ -34,7 +34,7 @@ int main(){
     //     it->second.print(); // Afficher les informations de l'arrêt
     //     it->second.printLignes(); // Afficher les lignes associées à chaque arrêt
     // }
-    
+
 
     // Afficher les informations des lignes
     for (const auto& ligne : lignes) {
@@ -54,32 +54,54 @@ int main(){
     getline(cin, departName);
     cout << "Entrez le nom de l'arrêt d'arrivée : ";
     getline(cin, arriveeName);
-    string depart = getStopIdByName(departName, stops);
-    string arrivee = getStopIdByName(arriveeName, stops);
+    vector<string> depart = getStopIdByName(departName, stops);
+    vector<string> arrivee = getStopIdByName(arriveeName, stops);
 
     // string depart = "0:PEgrou1"; // ID de l'arrêt de départ
     // string arrivee = "0:BXcayr1"; // ID de l'arrêt d'arrivée
-    Noeud Fin = Dijktra(depart, arrivee, h1, &stops, &lignes, &arretsVoisin, &arretsVisites);
+    vector<vector<Noeud>> chemin;
+    vector<vector<int>> indicesChangement;
+    for(int i = 0 ; i < depart.size() ; i++){
+        for(int j = 0 ; j < arrivee.size() ; j++){
+            Noeud Fin = Dijktra(depart[i], arrivee[j], h1, &stops, &lignes, &arretsVoisin, &arretsVisites);
 
-    // Construire le chemin à partir des nœuds
-    vector<Noeud> chemin;
-    Noeud current = Fin;
-    while (current.precedent != -1) {
-        chemin.insert(chemin.begin(), current); // Ajouter le nœud au début du chemin
-        current = arretsVisites[current.precedent];
-    }
-    chemin.insert(chemin.begin(), arretsVisites[0]); // Ajouter le nœud de départ
-    // Identifier les indices de changement de ligne
-    vector<int> indicesChangement;
-    for (size_t i = 1; i < chemin.size(); ++i) {
-        if (chemin[i].ligneId != chemin[i - 1].ligneId) {
-            indicesChangement.push_back(i - 1);
+            // Construire le chemin à partir des nœuds
+            cout << "Itération i " << i << endl;
+            vector<Noeud> temp_chemin;
+            Noeud current = Fin;
+            cout << "On va rentre dans le whiiiiiiiile" << endl;
+            while (current.precedent != -1) {
+                cout << "Bah là on est toujours dans le while" << endl;
+                temp_chemin.insert(temp_chemin.begin(), current); // Ajouter le nœud au début du chemin
+                cout << "C'est le current qui pose problème" << endl;
+                current = arretsVisites[current.precedent];
+                cout << "Fin du while, itération suivante ?" << endl;
+            }
+            cout << "Le while est fini, quitter la boucle !" << endl;
+            temp_chemin.insert(temp_chemin.begin(), arretsVisites[0]); // Ajouter le nœud de départ
+            // Identifier les indices de changement de ligne
+            cout << "On va rentrer dans le 2e for" << endl;
+            vector<int> indices_temp;
+            for (size_t k = 1; k < temp_chemin.size(); ++k) {
+                cout << "Itération k " << k << endl;
+                if (temp_chemin[k].ligneId != temp_chemin[k - 1].ligneId) {
+                    cout << "On est rentré dans le if " << i << " " << k << endl;
+                    indices_temp.push_back(k - 1);
+                }
+                cout << "Fin itération k " << k << endl;
+            }
+            cout << "Fin itération i " << i << endl;
+            chemin.push_back(temp_chemin);
+            indicesChangement.push_back(indices_temp);
         }
     }
 
-    // Afficher le chemin
-    afficherChemin(chemin, indicesChangement, &stops, &lignes);
+    cout << "Dijkstra finito !!! et chemins aussi" << endl;
 
+    // Afficher le chemin
+    for(int i = 0 ; i < chemin.size() ; i++)
+        if(chemin[i].size() > 1)
+            afficherChemin(chemin[i], indicesChangement[i], &stops, &lignes);
 
     return 0;
 }

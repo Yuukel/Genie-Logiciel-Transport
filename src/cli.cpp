@@ -79,14 +79,16 @@
 //     cout << endl;
 // }
 
-string getStopIdByName(const string& stopName, const unordered_map<string, Arret>& stops) {
+vector<string> getStopIdByName(const string& stopName, const unordered_map<string, Arret>& stops) {
+    vector<string> stopsList;
     for (const auto& stop : stops) {
         if (stop.second.stopName == stopName) {
-            return stop.first; // Retourne l'ID de l'arrêt
+            stopsList.push_back(stop.first); // Retourne l'ID de l'arrêt
         }
     }
-    cerr << "Erreur : Aucun arrêt trouvé pour le nom '" << stopName << "'." << endl;
-    return ""; // Retourne une chaîne vide si aucun arrêt n'est trouvé
+    if(stopsList.empty())
+        cerr << "Erreur : Aucun arrêt trouvé pour le nom '" << stopName << "'." << endl;
+    return stopsList;
 }
 
 void afficherChemin(const vector<Noeud>& chemin, const vector<int>& indicesChangement, unordered_map<string, Arret>* stops, vector<Ligne>* lignes) {

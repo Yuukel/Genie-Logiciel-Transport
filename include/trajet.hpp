@@ -13,25 +13,29 @@ struct Horaire {
     unsigned int heure;
     unsigned int minute;
 
-    // Surcharge de l'opérateur ==
-    bool operator==(const Horaire& other) const {
-        return heure == other.heure && minute == other.minute;
-    }
-
-    // Surcharge de l'opérateur <
     bool operator<(const Horaire& other) const {
         return (heure < other.heure) || (heure == other.heure && minute < other.minute);
     }
 
-    // Surcharge de l'opérateur >
-    bool operator>(const Horaire& other) const {
-        return (heure > other.heure) || (heure == other.heure && minute > other.minute);
+    bool operator<=(const Horaire& other) const {
+        return (*this < other) || (*this == other);
     }
- 
-    void operator=(const Horaire& other) {
-        heure = other.heure;
-minute = other.minute;
-        }
+
+    bool operator>(const Horaire& other) const {
+        return other < *this;
+    }
+
+    bool operator>=(const Horaire& other) const {
+        return !(*this < other);
+    }
+
+    bool operator==(const Horaire& other) const {
+        return heure == other.heure && minute == other.minute;
+    }
+
+    bool operator!=(const Horaire& other) const {
+        return !(*this == other);
+    }
 } typedef Horaire;
 
 // Copie Dijkstra.hpp (à retirer si on test Dijkstra)
@@ -42,24 +46,23 @@ struct Noeud {
     Horaire heure; // heure de passage à cet arrêt
 
     // Constructeur par défaut
-  Noeud() : arretId("Vide"), ligneId(""), precedent(-1), heure({0, 0}) {};
+    Noeud() : arretId("Vide"), ligneId(""), precedent(-1), heure({0, 0}) {};
 
     // Nouveau constructeur avec l'arg horaire
-    Noeud(string id, string ligne, int prec, Horaire h)
-        : arretId(id), ligneId(ligne), precedent(prec), heure(h) {}
+    Noeud(string id, string ligne, int prec, Horaire h) : arretId(id), ligneId(ligne), precedent(prec), heure(h) {}
 
 
-        void operator=(const Noeud& other){
-            arretId = other.arretId;
-            ligneId = other.ligneId;
-            precedent = other.precedent;
-            heure = other.heure;
-        }
+    void operator=(const Noeud& other){
+        arretId = other.arretId;
+        ligneId = other.ligneId;
+        precedent = other.precedent;
+        heure = other.heure;
+    }
      
-        void print(){
-            cout << "Arret: " << arretId << ", Ligne: " << ligneId << ", Heure: " << setfill('0') << setw(2) << heure.heure << ":" << setfill('0') << setw(2) << heure.minute << endl;
-            }
-        };
+    void print() const{
+        std::cout << "Arret: " << arretId << ", Ligne: " << ligneId << ", Heure: " << std::setfill('0') << std::setw(2) << heure.heure << ":" << std::setfill('0') << std::setw(2) << heure.minute << std::endl;
+    }
+};
 
 class Ligne {
     public:

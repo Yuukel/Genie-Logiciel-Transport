@@ -59,13 +59,14 @@ vector<vector<Horaire>> Ligne::getHoraires() const{
     return horaires;
 }
 
-int Ligne::getHorairesPrecis(Horaire h, int arret) const{
-    for (int i = 0; i < horaires.size(); i++) {
-        if (horaires[i][arret].heure >= h.heure || horaires[i][arret].heure == h.heure && horaires[i][arret].minute >= h.minute) {
-            return i; // Retourne l'indice de l'horaire correspondant
+int Ligne::getHorairesPrecis(Horaire heureActuelle, int indexArret) const {
+    const vector<Horaire>& horairesArret = horaires[indexArret];
+    for (int i = 0; i < horairesArret.size(); i++) {
+        if (heureActuelle < horairesArret[i]) {
+            return i; // Retourne le premier horaire strictement supérieur
         }
     }
-    return -1; // Si aucun horaire ne correspond, retourne -1
+    return -1; // Aucun horaire disponible après l'heure actuelle
 }
 
 Horaire Ligne::getDernierHoraire(int arret) const{
