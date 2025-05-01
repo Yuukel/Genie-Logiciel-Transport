@@ -38,14 +38,14 @@ void readStop(char * filePath, unordered_map<string, Arret>* stops){
         }
 
         // Retirer le dernier caractère de l'ID de l'arrêt
-        if (!stopId.empty()) {
-            stopId.pop_back(); // Supprime le dernier caractère
-        }
+        // if (!stopId.empty()) {
+        //     stopId.pop_back(); // Supprime le dernier caractère
+        // }
 
-        // Si un arrêt avec le même ID existe déjà, fusionner les informations
-        if (stops->find(stopId) != stops->end()) {
-            continue; // On fusionne les arrêts ayant plusieurs itérations mais un numéro différent (impact potentiel sur le sens)
-        }
+        // // Si un arrêt avec le même ID existe déjà, fusionner les informations
+        // if (stops->find(stopId) != stops->end()) {
+        //     continue; // On fusionne les arrêts ayant plusieurs itérations mais un numéro différent (impact potentiel sur le sens)
+        // }
         
         // Créer un objet Arret et l'ajouter à la map
         Arret arret(stopId, stopName);
@@ -105,6 +105,7 @@ void readTrips(char* filePath, vector<Ligne>* lignes, unordered_map<string, stri
     file.close();
 }
 
+int cpt1;
 void completeLignes(char* filePath, vector<Ligne>* lignes, unordered_map<string, Arret>* stops, unordered_map<string, string>& tripHeadsigns, unordered_map<string, string>& tripRouteIds) {
     ifstream file(filePath);
 
@@ -164,9 +165,9 @@ void completeLignes(char* filePath, vector<Ligne>* lignes, unordered_map<string,
                 string adjustedStopId = stopId;
 
                 // Retirer le dernier caractère de l'ID de l'arrêt
-                if (!adjustedStopId.empty()) {
-                    adjustedStopId.pop_back();
-                }
+                // if (!adjustedStopId.empty()) {
+                //     adjustedStopId.pop_back();
+                // }
 
                 newStops.push_back(adjustedStopId);
             }
@@ -185,22 +186,24 @@ void completeLignes(char* filePath, vector<Ligne>* lignes, unordered_map<string,
                     
                     // Retirer le dernier caractère de l'ID de l'arrêt pour la comparaison
                     string adjustedStopId = stopId;
-                    if (!adjustedStopId.empty()) {
-                        adjustedStopId.pop_back();
-                    }
+                    // if (!adjustedStopId.empty()) {
+                    //     adjustedStopId.pop_back();
+                    // }
 
                     // Mettre à jour la map `stops` pour associer l'arrêt à la ligne
                     if (stops->find(adjustedStopId) != stops->end() && 
-                        find(stops->at(adjustedStopId).lignes.begin(), stops->at(adjustedStopId).lignes.end(), it->idLigne) == stops->at(adjustedStopId).lignes.end()) {
+                    find(stops->at(adjustedStopId).lignes.begin(), stops->at(adjustedStopId).lignes.end(), it->idLigne) == stops->at(adjustedStopId).lignes.end()) {
+                        cpt1++;
                         stops->at(adjustedStopId).addLigne(it->idLigne);
                     }
                 }
             }
         }
     }
-
+    cout << "cpt1 = " << cpt1 << endl;
     removeDuplicateHoraire(lignes);
 }
+
 
 void removeDuplicateHoraire(vector<Ligne>* lignes) {
     for (int i = 0; i < lignes->size(); i++) {

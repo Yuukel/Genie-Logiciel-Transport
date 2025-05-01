@@ -7,7 +7,7 @@ CC = g++
 
 EXE = main.exe
 
-$(EXE): main.o trajet.o arret.o parsing.o cli.o
+$(EXE): main.o trajet.o arret.o parsing.o cli.o dijkstra.o
 	$(CC) $(OBJ)* -o $@
 
 main.o: trajet.o arret.o parsing.o cli.o dijkstra.o

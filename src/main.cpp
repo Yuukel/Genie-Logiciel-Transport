@@ -10,11 +10,6 @@ unordered_map<string, Arret> stops; // Map des arrêts (stop_id -> stop_name)
 unordered_map<string, string> tripHeadsigns;
 unordered_map<string, string> tripRouteIds;
 
-
-// Variables pour l'algorithme de Dijkstra
-vector<Noeud> arretsVoisin; //les voisins direct des arret deja visites
-vector<Noeud> arretsVisites; // liste des arrets deja visites
-
 int main(){
     char stopsFilePath[] = "data/stops.txt";
     char tripsFilePath[] = "data/trips.txt";
@@ -22,7 +17,7 @@ int main(){
 
     // Charger les arrêts depuis le fichier stops.txt
     readStop(stopsFilePath, &stops);
- 
+
      // Charger les lignes depuis trips.txt
     readTrips(tripsFilePath, &lignes, tripHeadsigns, tripRouteIds);
 
@@ -34,51 +29,81 @@ int main(){
     //     it->second.print(); // Afficher les informations de l'arrêt
     //     it->second.printLignes(); // Afficher les lignes associées à chaque arrêt
     // }
-    
 
     // Afficher les informations des lignes
+    int cpt2;
+
     for (const auto& ligne : lignes) {
-        ligne.print();
-        ligne.printArrets();
-        ligne.printHoraires();
+        // ligne.print();
+        // ligne.printArrets();
+        // ligne.printHoraires();
+        cpt2++;
     }
+    cout << "cpt2 = " << cpt2 << endl;
     //lignes[0].print();
     //lignes[0].printArrets();
     // lignes[0].printHoraires();
 
     // Exemple de nœuds reliés à la main avec stopName et nomLigne
-    Horaire h1 = {7, 0};
+    Horaire h1 = {8, 50};
     // Entrée utilisateur pour le départ et l'arrivée
     string departName, arriveeName;
     cout << "Entrez le nom de l'arrêt de départ : ";
     getline(cin, departName);
     cout << "Entrez le nom de l'arrêt d'arrivée : ";
     getline(cin, arriveeName);
-    string depart = getStopIdByName(departName, stops);
-    string arrivee = getStopIdByName(arriveeName, stops);
+    vector<string> depart = getStopIdByName(departName, stops);
+    vector<string> arrivee = getStopIdByName(arriveeName, stops);
 
-    // string depart = "0:PEgrou1"; // ID de l'arrêt de départ
-    // string arrivee = "0:BXcayr1"; // ID de l'arrêt d'arrivée
-    Noeud Fin = Dijktra(depart, arrivee, h1, &stops, &lignes, &arretsVoisin, &arretsVisites);
+    vector<vector<vector<Noeud>>> cheminsFinaux;
+    // vector<vector<int>> indicesChangements;
+    for(int i = 0 ; i < depart.size() ; i++){
+        cout << "depart[i] = " << depart[i] << endl;
+        for(int j = 0 ; j < arrivee.size() ; j++){
+            cout << "arrivee[j] = " << arrivee[j] << endl;
+            vector<vector<Noeud>> chemin = Dijkstra(depart[i], arrivee[j], h1, &stops, &lignes);
 
-    // Construire le chemin à partir des nœuds
-    vector<Noeud> chemin;
-    Noeud current = Fin;
-    while (current.precedent != -1) {
-        chemin.insert(chemin.begin(), current); // Ajouter le nœud au début du chemin
-        current = arretsVisites[current.precedent];
-    }
-    chemin.insert(chemin.begin(), arretsVisites[0]); // Ajouter le nœud de départ
-    // Identifier les indices de changement de ligne
-    vector<int> indicesChangement;
-    for (size_t i = 1; i < chemin.size(); ++i) {
-        if (chemin[i].ligneId != chemin[i - 1].ligneId) {
-            indicesChangement.push_back(i - 1);
+            // vector<int> indicesTemp;
+            // for (size_t k = 1; k < chemin.size(); ++k) {
+            //     // cout << "Debug : " << chemin[k - 1].ligneId << endl;
+            //     if (chemin[k].ligneId != chemin[k - 1].ligneId) {
+            //         indicesTemp.push_back(k - 1);
+            //     }
+            // }
+            if(!chemin.empty())
+                cheminsFinaux.push_back(chemin);
+            // indicesChangements.push_back(indicesTemp);
         }
     }
 
-    // Afficher le chemin
-    afficherChemin(chemin, indicesChangement, &stops, &lignes);
+    cout << cheminsFinaux.size() << endl;
+    for(int i = 0 ; i < cheminsFinaux.size() ; i++){
+        cout << "Chemin numéro " << i << endl;
+        for(int j = 0 ; j < cheminsFinaux[i].size() ; j++){
+            int indexLigne = trouveLigne(cheminsFinaux[i][j][0].ligneId , &lignes);
+            cout << "Ligne " << lignes[indexLigne].nomLigne << "(" << cheminsFinaux[i][j][0].ligneId << ")" << endl;
+            for(int k = 0 ; k < cheminsFinaux[i][j].size() ; k++){
+                cout << "  Arrêt : " << stops[cheminsFinaux[i][j][k].arretId].stopName;
+                cout << "  Horaire : " << cheminsFinaux[i][j][k].heure.heure << ":"
+                << setw(2) << setfill('0') << cheminsFinaux[i][j][k].heure.minute << endl;
+                cout << endl;
+            }
+        }
+        cout << endl;
+    }
+
+
+
+    // Afficher les chemins
+    // for(int i = 0 ; i < cheminsFinaux.size() ; i++){
+    //     if(cheminsFinaux[i].size() > 1)
+    //         // afficherChemin(cheminsFinaux[i], indicesChangements[i], &stops, &lignes);
+    // }
+
+    // for(int i = 0 ; i < cheminsFinaux.size() ; i++){
+    //     if(cheminsFinaux[i].size() > 1)
+    //
+    // }
 
 
     return 0;

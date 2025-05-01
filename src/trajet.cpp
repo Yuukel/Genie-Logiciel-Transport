@@ -38,8 +38,11 @@ void Ligne::printHoraires() const{
     cout << horaires.size() << endl;
     cout << "Horaires de la ligne :" << endl;
     for (int i = 0; i < horaires.size(); i++) {
-        cout << setfill('0') << setw(2) << horaires[i][0].heure << ":"
-        << setfill('0') << setw(2) << horaires[i][0].minute << endl;
+        for(int j = 0 ; j < horaires[i].size() ; j++){
+            cout << setfill('0') << setw(2) << horaires[i][j].heure << ":"
+            << setfill('0') << setw(2) << horaires[i][j].minute << " ";
+        }
+        cout << endl;
     }
 }
 
@@ -60,11 +63,23 @@ vector<vector<Horaire>> Ligne::getHoraires() const{
 }
 
 int Ligne::getHorairesPrecis(Horaire h, int arret) const{
-    for (int i = 0; i < horaires.size(); i++) {
-        if (horaires[i][arret].heure >= h.heure || horaires[i][arret].heure == h.heure && horaires[i][arret].minute >= h.minute) {
+    // cout << "Horaires de la ligne " << idLigne << endl;
+    // cout << "int arret = " << arret << endl;
+    // printHoraires();
+    for (int i = 0; i < horaires[arret].size(); i++) {
+        // cout << idLigne << " " << nomLigne << " itération " << i << endl;
+        // horaires[arret][i].print();
+        if ((horaires[arret][i].heure == h.heure && horaires[arret][i].minute >= h.minute) || horaires[arret][i].heure > h.heure) {
+            // cout << "Entrée dans le if : " << horaires[arret][i].heure << " == " << h.heure;
+            // cout << " && " << horaires[arret][i].minute << " >= " << h.minute << endl;
+            // cout << "h = ";
+            // h.print();
+            // cout << "horaires[arret][i] = ";
+            // horaires[arret][i].print();
             return i; // Retourne l'indice de l'horaire correspondant
         }
     }
+    // cout << endl;
     return -1; // Si aucun horaire ne correspond, retourne -1
 }
 

@@ -6,7 +6,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 1:CNALIZ,,Alizés,,42.70296860,3.02272010,,,1,,0,
 1:ESALOE,,Aloès,,42.70750430,2.83560040,,,1,,0,
 1:MAALOE,,Aloès,,42.73410020,3.02924320,,,1,,0,
-1:PEAMAR,,Amarell,,42.69503790,2.93110200,,,1,,0,
+1:PEAMAR,,Amarell,,42.69587880,2.93053470,,,1,,0,
 1:CYAMPE,,Ampère,,42.68876320,2.91990670,,,1,,0,
 1:LBANNI,,Annibal,,42.80569070,3.03727690,,,1,,0,
 1:LSANNI,,Annibal,,42.77181400,3.00663790,,,1,,0,
@@ -20,7 +20,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 1:PEARDE,,Ardennes,,42.68754240,2.89990650,,,1,,0,
 1:RIARNA,,Arnaud de Villeneuve,,42.76858700,2.87663940,,,1,,0,
 1:CGARQU,,Arque,,42.74560990,2.62622000,,,1,,0,
-1:PEAREN,,Arène,,42.68943210,2.89292230,,,1,,0,
+1:PEAREN,,Arène,,42.68941430,2.89294260,,,1,,0,
 1:PEARGE,,Avenue d'Argelès,,42.67864320,2.91219930,,,1,,0,
 1:POAVEN,,Avenue du Roussi,,42.64111510,2.87432550,,,1,,0,
 1:CNAVEN,,Avenue du Roussillon,,42.69785300,3.03064700,,,1,,0,
@@ -86,7 +86,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 1:RACANI,,Canigou,,42.62565110,2.92105160,,,1,,0,
 1:SACANI,,Canigou,,42.65262020,2.94506350,,,1,,0,
 1:CACANO,,Canohès,,42.65158070,2.83176610,,,1,,0,
-1:PECANT,,Canteroux,,42.67665100,2.89020500,,,1,,0,
+1:PECANT,,Canteroux,,42.67651230,2.89007790,,,1,,0,
 1:LBCAPC,,Cap Coudalère,,42.81532330,3.02199760,,,1,,0,
 1:RICAPR,,Cap Roussillon,,42.77560070,2.90882600,,,1,,0,
 1:NASTNA,,Cap Sud,,42.66629020,2.98502790,,,1,,0,
@@ -184,13 +184,12 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 1:PEDUCU,,Ducup,,42.69020080,2.83550040,,,1,,0,
 1:EADUVE,,Duverney,,42.77323720,2.84105480,,,1,,0,
 1:FAUR,,Dépôt FAUR,,42.68932090,2.85134500,,,1,,0,
-1:DEPOT,,Dépôt Sankeo,,42.72270320,2.89785440,,,1,,0,
-1:SCANIA,,Dépôt Scania,,42.78651920,2.89814750,,,1,,0,
+1:DEPOT,,Dépôt Sankeo,,42.72278640,2.89773720,,,1,,0,
 1:PEEAUX,,Eaux Vives,,42.69423100,2.87186400,,,1,,0,
 1:BXECOL,,Ecole de Baixas,,42.75157950,2.81040850,,,1,,0,
 1:CYECOL,,Ecole de Musique,,42.67570870,2.93720910,,,1,,0,
 1:CPECOZ,,Ecozonia,,42.78256440,2.77904970,,,1,,0,
-1:PEELVI,,El Vivès,,42.71361610,2.90118800,,,1,,0,
+1:PEELVI,,El Vivès,,42.71360650,2.90119010,,,1,,0,
 1:SAEOLI,,Eolienne,,42.65546410,2.95747770,,,1,,0,
 1:RIESPA,,Espace Entreprises,,42.80330270,2.89693710,,,1,,0,
 1:EAESPI,,Espira de l'Agly,,42.77740990,2.82986490,,,1,,0,
@@ -283,7 +282,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 1:PELAN1,,Languedoc,,42.74060420,2.89186970,,,1,,0,
 1:PELAN2,,Languedoc,,42.74029690,2.89188400,,,1,,0,
 1:PELAN3,,Languedoc,,42.74066830,2.89200820,,,1,,0,
-1:CNLASB,,Las Bigues,,42.70602980,3.01231720,,,1,,0,
+1:CNLASB,,Las Bigues,,42.70599590,3.01255760,,,1,,0,
 1:CALASC,,Las Canals,,42.65684310,2.83812360,,,1,,0,
 1:PELASC,,Las Cobas,,42.69574030,2.91933020,,,1,,0,
 1:RIOLIV,,Las Solades,,42.78225900,2.87899600,,,1,,0,
@@ -322,7 +321,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 1:PELMA3,,Lycée Maillol,,42.71718210,2.88739870,,,1,,0,
 1:PELPIC,,Lycée Picasso,,42.69755520,2.92604950,,,1,,0,
 1:LBLYDI,,Lydia,,42.83089070,3.03858850,,,1,,0,
-1:CNMAPR,,Ma Prairie,,42.70104970,2.99923690,,,1,,0,
+1:CNMAPR,,Ma Prairie,,42.70119810,2.99919940,,,1,,0,
 1:PEMADR,,Madrid,,42.68718280,2.84390980,,,1,,0,
 1:LSMAIL,,Maillol,,42.77047530,2.99694480,,,1,,0,
 1:FEMAIR,,Mairie,,42.68264950,2.73481440,,,1,,0,
@@ -355,7 +354,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 1:BOMASP,,Mas Pams,,42.72958560,2.93504980,,,1,,0,
 1:TOMAPS,,Mas Puig-Sec,,42.67306900,2.82708700,,,1,,0,
 1:PEMSTJ,,Mas St-Joseph,,42.69818110,2.93607850,,,1,,0,
-1:PEMSTP,,Mas St-Pierre,,42.69308740,2.94383250,,,1,,0,
+1:PEMSTP,,Mas St-Pierre,,42.69278800,2.94420720,,,1,,0,
 1:BOMAST,,Mas Taillant,,42.71897790,2.92717300,,,1,,0,
 1:PEMASV,,Mas Vermeil,,42.69433950,2.93600490,,,1,,0,
 1:CAMASS,,Massaguères,,42.65334310,2.83198170,,,1,,0,
@@ -479,7 +478,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 1:PERAIS,,Raisins,,42.69281470,2.87252210,,,1,,0,
 1:PERAPH,,Raphaël,,42.69131090,2.89647000,,,1,,0,
 1:PEREIC,,Reichel,,42.69196700,2.86572030,,,1,,0,
-1:PERENA,,Renaudel,,42.69016970,2.88385950,,,1,,0,
+1:PERENA,,Renaudel,,42.69039920,2.88368160,,,1,,0,
 1:PEREPO,,Repos,,42.69117550,2.89054390,,,1,,0,
 1:PERIBE,,Ribeil,,42.67177580,2.90492320,,,1,,0,
 1:PERIPO,,Ripoll,,42.66214750,2.87798110,,,1,,0,
@@ -514,7 +513,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 1:ESSTES,,St-Estève,,42.70684620,2.83897170,,,1,,0,
 1:FESFDA,,St-Féliu d'Avall,,42.68377020,2.73101570,,,1,,0,
 1:PTSTGA,,St-Galdric,,42.62931240,2.81702350,,,1,,0,
-1:PESTGA,,St-Gaudérique,,42.69290730,2.91388120,,,1,,0,
+1:PESTGA,,St-Gaudérique,,42.69285700,2.91376120,,,1,,0,
 1:HYSTHI,,St-Hippolyte,,42.78005780,2.96317530,,,1,,0,
 1:LSSTJA,,St-Jacques,,42.77257350,2.99840670,,,1,,0,
 1:PESTJA,,St-Jacques,,42.69879910,2.90556870,,,1,,0,
@@ -588,7 +587,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 0:MAaloe1,,Aloès,,42.73418800,3.02943320,,,0,1:MAALOE,0,3
 0:MAaloe2,,Aloès,,42.73418900,3.02958300,,,0,1:MAALOE,0,3
 0:MAaloe3,,Aloès,,42.73392370,3.02871340,,,0,1:MAALOE,0,3
-0:PEamar1,,Amarell,,42.69503790,2.93110200,,,0,1:PEAMAR,0,3
+0:PEamar1,,Amarell,,42.69587880,2.93053470,,,0,1:PEAMAR,0,3
 0:CYampe1,,Ampère,,42.68887060,2.91987610,,,0,1:CYAMPE,0,3
 0:CYampe2,,Ampère,,42.68865590,2.91993740,,,0,1:CYAMPE,0,3
 0:LBanni1,,Annibal,,42.80588140,3.03718180,,,0,1:LBANNI,0,3
@@ -614,7 +613,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 0:RIarna2,,Arnaud de Villeneuve,,42.76854310,2.87666460,,,0,1:RIARNA,0,3
 0:CGarqu1,,Arque,,42.74560990,2.62622000,,,0,1:CGARQU,0,3
 0:PEaren1,,Arène,,42.68951420,2.89274450,,,0,1:PEAREN,0,3
-0:PEaren2,,Arène,,42.68935000,2.89310000,,,0,1:PEAREN,0,3
+0:PEaren2,,Arène,,42.68931440,2.89314070,,,0,1:PEAREN,0,3
 0:PEarge1,,Avenue d'Argelès,,42.67885070,2.91188110,,,0,1:PEARGE,0,3
 0:PEarge2,,Avenue d'Argelès,,42.67843570,2.91251750,,,0,1:PEARGE,0,3
 0:POaven1,,Avenue du Roussi,,42.64102170,2.87399670,,,0,1:POAVEN,0,3
@@ -734,7 +733,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 0:SAcani1,,Canigou,,42.65258780,2.94506430,,,0,1:SACANI,0,3
 0:SAcani2,,Canigou,,42.65265260,2.94506260,,,0,1:SACANI,0,3
 0:CAcano1,,Canohès,,42.65158070,2.83176610,,,0,1:CACANO,0,3
-0:PEcant1,,Canteroux,,42.67665100,2.89004950,,,0,1:PECANT,0,3
+0:PEcant1,,Canteroux,,42.67637360,2.88979520,,,0,1:PECANT,0,3
 0:PEcant2,,Canteroux,,42.67665090,2.89036060,,,0,1:PECANT,0,3
 0:LBcapc,,Cap Coudalère,,42.81532330,3.02199760,,,0,1:LBCAPC,0,3
 0:RIcapr1,,Cap Roussillon,,42.77570010,2.90878160,,,0,1:RICAPR,0,3
@@ -913,7 +912,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 0:EAduve2,,Duverney,,42.77322390,2.84104370,,,0,1:EADUVE,0,3
 0:FAURdep,,Dépôt FAUR,,42.68932090,2.85134500,,,0,1:FAUR,0,3
 0:Depot,,Dépôt Sankeo,,42.72270320,2.89785440,,,0,1:DEPOT,0,3
-0:Scania,,Dépôt Scania,,42.78651920,2.89814750,,,0,1:SCANIA,0,3
+0:Scania,,Dépôt Sankeo,,42.72286960,2.89761990,,,0,1:DEPOT,0,3
 0:PEeaux1,,Eaux Vives,,42.69427490,2.87203340,,,0,1:PEEAUX,0,3
 0:PEeaux2,,Eaux Vives,,42.69418720,2.87169460,,,0,1:PEEAUX,0,3
 0:BXecolS,,Ecole de Baixas,,42.75157950,2.81040850,,,0,1:BXECOL,0,3
@@ -921,7 +920,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 0:CYmusi1,,Ecole de Musique,,42.67581550,2.93711210,,,0,1:CYECOL,0,3
 0:CPecoz1,,Ecozonia,,42.78256440,2.77904970,,,0,1:CPECOZ,0,3
 0:PEelvi1,,El Vivès,,42.71380230,2.90122600,,,0,1:PEELVI,0,3
-0:PEelvi2,,El Vivès,,42.71343000,2.90115000,,,0,1:PEELVI,0,3
+0:PEelvi2,,El Vivès,,42.71341080,2.90115420,,,0,1:PEELVI,0,3
 0:SAeoli1,,Eolienne,,42.65551750,2.95760680,,,0,1:SAEOLI,0,3
 0:SAeoli2,,Eolienne,,42.65541070,2.95734860,,,0,1:SAEOLI,0,3
 0:RIespa1,,Espace Entreprises,,42.80330270,2.89693710,,,0,1:RIESPA,0,3
@@ -1091,7 +1090,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 0:PElang3,,Languedoc,,42.74066830,2.89200820,,,0,1:PELAN3,0,3
 0:PElang4,,Languedoc,,42.74028400,2.89177500,,,0,1:PELAN1,0,3
 0:CNlasb1,,Las Bigues,,42.70606990,3.01151710,,,0,1:CNLASB,0,3
-0:CNlasb2,,Las Bigues,,42.70598980,3.01311730,,,0,1:CNLASB,0,3
+0:CNlasb2,,Las Bigues,,42.70592190,3.01359820,,,0,1:CNLASB,0,3
 0:CAlasc1,,Las Canals,,42.65690980,2.83805780,,,0,1:CALASC,0,3
 0:CAlasc2,,Las Canals,,42.65677640,2.83818940,,,0,1:CALASC,0,3
 0:PElasc1,,Las Cobas,,42.69601280,2.91917480,,,0,1:PELASC,0,3
@@ -1166,7 +1165,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 0:PEpica2,,Lycée Picasso,,42.69750210,2.92604520,,,0,1:PELPIC,0,3
 0:LBlydi1,,Lydia,,42.83089070,3.03854080,,,0,1:LBLYDI,0,3
 0:LBlydi2,,Lydia,,42.83089060,3.03863620,,,0,1:LBLYDI,0,3
-0:CNmapr1,,Ma Prairie,,42.70106120,2.99926950,,,0,1:CNMAPR,0,3
+0:CNmapr1,,Ma Prairie,,42.70135790,2.99919440,,,0,1:CNMAPR,0,3
 0:CNmapr2,,Ma Prairie,,42.70103830,2.99920440,,,0,1:CNMAPR,0,3
 0:PEmadr1,,Madrid,,42.68706400,2.84404930,,,0,1:PEMADR,0,3
 0:PEmadr2,,Madrid,,42.68730160,2.84377030,,,0,1:PEMADR,0,3
@@ -1231,6 +1230,9 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 0:PEmstj2,,Mas St-Joseph,,42.69816970,2.93644690,,,0,1:PEMSTJ,0,3
 0:PEmstp1,,Mas St-Pierre,,42.69313880,2.94388700,,,0,1:PEMSTP,0,3
 0:PEmstp2,,Mas St-Pierre,,42.69303600,2.94377800,,,0,1:PEMSTP,0,3
+0:PEmstp3,,Mas St-Pierre,,42.69253570,2.94442310,,,0,1:PEMSTP,0,3
+0:PEmstp4,,Mas St-Pierre,,42.69267630,2.94413000,,,0,1:PEMSTP,0,3
+0:PEmstp5,,Mas St-Pierre,,42.69255340,2.94481790,,,0,1:PEMSTP,0,3
 0:BOmast1,,Mas Taillant,,42.71919810,2.92729650,,,0,1:BOMAST,0,3
 0:BOmast2,,Mas Taillant,,42.71875760,2.92704950,,,0,1:BOMAST,0,3
 0:PEmasv1,,Mas Vermeil,,42.69415850,2.93595100,,,0,1:PEMASV,0,3
@@ -1459,7 +1461,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 0:PEreic1,,Reichel,,42.69186020,2.86559060,,,0,1:PEREIC,0,3
 0:PEreic2,,Reichel,,42.69207380,2.86585000,,,0,1:PEREIC,0,3
 0:PErena1,,Renaudel,,42.69004330,2.88392630,,,0,1:PERENA,0,3
-0:PErena2,,Renaudel,,42.69029610,2.88379260,,,0,1:PERENA,0,3
+0:PErena2,,Renaudel,,42.69075510,2.88343690,,,0,1:PERENA,0,3
 0:PErepo1,,Repos,,42.69115070,2.89050340,,,0,1:PEREPO,0,3
 0:PErepo2,,Repos,,42.69120030,2.89058450,,,0,1:PEREPO,0,3
 0:PEribe1,,Ribeil,,42.67171480,2.90488840,,,0,1:PERIBE,0,3
@@ -1529,7 +1531,7 @@ stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,locatio
 0:PTst-g2,,St-Galdric,,42.62910450,2.81699750,,,0,1:PTSTGA,0,3
 0:PTst-g3,,St-Galdric,,42.62952030,2.81704950,,,0,1:PTSTGA,0,3
 0:PEst-g1,,St-Gaudérique,,42.69289400,2.91374920,,,0,1:PESTGA,0,3
-0:PEst-g2,,St-Gaudérique,,42.69292060,2.91401310,,,0,1:PESTGA,0,3
+0:PEst-g2,,St-Gaudérique,,42.69282010,2.91377310,,,0,1:PESTGA,0,3
 0:HYst-h1,,St-Hippolyte,,42.78021230,2.96322270,,,0,1:HYSTHI,0,3
 0:HYst-h2,,St-Hippolyte,,42.77990330,2.96312780,,,0,1:HYSTHI,0,3
 0:LSst-j1,,St-Jacques,,42.77257540,2.99836760,,,0,1:LSSTJA,0,3
