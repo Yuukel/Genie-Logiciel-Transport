@@ -20,6 +20,6 @@ void readTrips(char* filePath, vector<Ligne>* lignes, unordered_map<string, stri
 
 void completeLignes(char* filePath, vector<Ligne>* lignes, unordered_map<string, Arret>* stops, unordered_map<string, string>& tripHeadsigns, unordered_map<string, string>& tripRouteIds);
 
-void removeDuplicateHoraire(vector<Ligne>* lignes);
+void nettoyerHorairesEtArrets(vector<Ligne>* lignes);
 
 #endif

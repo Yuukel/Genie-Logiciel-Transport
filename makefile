@@ -8,7 +8,7 @@ CC = g++
 EXE = main.exe
 
 $(EXE): main.o trajet.o arret.o parsing.o cli.o dijkstra.o
-	$(CC) $(OBJ)* -o $@
+	$(CC) $(OBJ)* -g -o $@
 
 main.o: trajet.o arret.o parsing.o cli.o dijkstra.o
 	$(CC) $(SRC)main.cpp -I $(INC) -c -o $(OBJ)$@

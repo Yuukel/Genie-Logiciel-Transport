@@ -33,12 +33,12 @@ int main(){
     // Afficher les informations des lignes
     int cpt2;
 
-    for (const auto& ligne : lignes) {
-        // ligne.print();
-        // ligne.printArrets();
-        // ligne.printHoraires();
-        cpt2++;
-    }
+    // for (const auto& ligne : lignes) {
+    //     ligne.print();
+    //     ligne.printArrets();
+    //     ligne.printHoraires();
+    //     cpt2++;
+    // }
     cout << "cpt2 = " << cpt2 << endl;
     //lignes[0].print();
     //lignes[0].printArrets();

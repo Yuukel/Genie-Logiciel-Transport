@@ -6,6 +6,8 @@
 #include <string>
 #include <deque>
 #include <queue>
+#include <algorithm>
+#include <iterator>
 
 using namespace std;
 
