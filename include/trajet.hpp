@@ -61,7 +61,6 @@ class Ligne {
     string getSuivant(string arret) const; // retourne l'arrêt suivant de la ligne
     int getIndArret(string arret) const; // retourne l'indice de l'arrêt
     Horaire getDernierHoraire(int arret) const; // renvoie l'horaire du dernier passage à l'arrêt donné
- // retourne l'indice de l'arrêt
 };
 
 int trouveLigne(string id, vector<Ligne>* lignes); // retourne l'indice de la ligne dans le tableau des lignes

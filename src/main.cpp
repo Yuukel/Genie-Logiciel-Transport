@@ -31,7 +31,7 @@ int main(){
     // }
 
     // Afficher les informations des lignes
-    int cpt2;
+    // int cpt2;
 
     // for (const auto& ligne : lignes) {
     //     ligne.print();
@@ -39,58 +39,58 @@ int main(){
     //     ligne.printHoraires();
     //     cpt2++;
     // }
-    cout << "cpt2 = " << cpt2 << endl;
+    // cout << "cpt2 = " << cpt2 << endl;
     //lignes[0].print();
     //lignes[0].printArrets();
     // lignes[0].printHoraires();
 
     // Exemple de nœuds reliés à la main avec stopName et nomLigne
-    Horaire h1 = {8, 50};
-    // Entrée utilisateur pour le départ et l'arrivée
-    string departName, arriveeName;
-    cout << "Entrez le nom de l'arrêt de départ : ";
-    getline(cin, departName);
-    cout << "Entrez le nom de l'arrêt d'arrivée : ";
-    getline(cin, arriveeName);
-    vector<string> depart = getStopIdByName(departName, stops);
-    vector<string> arrivee = getStopIdByName(arriveeName, stops);
+    // Horaire h1 = {8, 50};
+    // // Entrée utilisateur pour le départ et l'arrivée
+    // string departName, arriveeName;
+    // cout << "Entrez le nom de l'arrêt de départ : ";
+    // getline(cin, departName);
+    // cout << "Entrez le nom de l'arrêt d'arrivée : ";
+    // getline(cin, arriveeName);
+    // vector<string> depart = getStopIdByName(departName, stops);
+    // vector<string> arrivee = getStopIdByName(arriveeName, stops);
 
-    vector<vector<vector<Noeud>>> cheminsFinaux;
-    // vector<vector<int>> indicesChangements;
-    for(int i = 0 ; i < depart.size() ; i++){
-        cout << "depart[i] = " << depart[i] << endl;
-        for(int j = 0 ; j < arrivee.size() ; j++){
-            cout << "arrivee[j] = " << arrivee[j] << endl;
-            vector<vector<Noeud>> chemin = Dijkstra(depart[i], arrivee[j], h1, &stops, &lignes);
+    // vector<vector<vector<Noeud>>> cheminsFinaux;
+    // // vector<vector<int>> indicesChangements;
+    // for(int i = 0 ; i < depart.size() ; i++){
+    //     cout << "depart[i] = " << depart[i] << endl;
+    //     for(int j = 0 ; j < arrivee.size() ; j++){
+    //         cout << "arrivee[j] = " << arrivee[j] << endl;
+    //         vector<vector<Noeud>> chemin = Dijkstra(depart[i], arrivee[j], h1, &stops, &lignes);
 
-            // vector<int> indicesTemp;
-            // for (size_t k = 1; k < chemin.size(); ++k) {
-            //     // cout << "Debug : " << chemin[k - 1].ligneId << endl;
-            //     if (chemin[k].ligneId != chemin[k - 1].ligneId) {
-            //         indicesTemp.push_back(k - 1);
-            //     }
-            // }
-            if(!chemin.empty())
-                cheminsFinaux.push_back(chemin);
-            // indicesChangements.push_back(indicesTemp);
-        }
-    }
+    //         // vector<int> indicesTemp;
+    //         // for (size_t k = 1; k < chemin.size(); ++k) {
+    //         //     // cout << "Debug : " << chemin[k - 1].ligneId << endl;
+    //         //     if (chemin[k].ligneId != chemin[k - 1].ligneId) {
+    //         //         indicesTemp.push_back(k - 1);
+    //         //     }
+    //         // }
+    //         if(!chemin.empty())
+    //             cheminsFinaux.push_back(chemin);
+    //         // indicesChangements.push_back(indicesTemp);
+    //     }
+    // }
 
-    cout << cheminsFinaux.size() << endl;
-    for(int i = 0 ; i < cheminsFinaux.size() ; i++){
-        cout << "Chemin numéro " << i << endl;
-        for(int j = 0 ; j < cheminsFinaux[i].size() ; j++){
-            int indexLigne = trouveLigne(cheminsFinaux[i][j][0].ligneId , &lignes);
-            cout << "Ligne " << lignes[indexLigne].nomLigne << "(" << cheminsFinaux[i][j][0].ligneId << ")" << endl;
-            for(int k = 0 ; k < cheminsFinaux[i][j].size() ; k++){
-                cout << "  Arrêt : " << stops[cheminsFinaux[i][j][k].arretId].stopName;
-                cout << "  Horaire : " << cheminsFinaux[i][j][k].heure.heure << ":"
-                << setw(2) << setfill('0') << cheminsFinaux[i][j][k].heure.minute << endl;
-                cout << endl;
-            }
-        }
-        cout << endl;
-    }
+    // cout << cheminsFinaux.size() << endl;
+    // for(int i = 0 ; i < cheminsFinaux.size() ; i++){
+    //     cout << "Chemin numéro " << i << endl;
+    //     for(int j = 0 ; j < cheminsFinaux[i].size() ; j++){
+    //         int indexLigne = trouveLigne(cheminsFinaux[i][j][0].ligneId , &lignes);
+    //         cout << "Ligne " << lignes[indexLigne].nomLigne << "(" << cheminsFinaux[i][j][0].ligneId << ")" << endl;
+    //         for(int k = 0 ; k < cheminsFinaux[i][j].size() ; k++){
+    //             cout << "  Arrêt : " << stops[cheminsFinaux[i][j][k].arretId].stopName;
+    //             cout << "  Horaire : " << cheminsFinaux[i][j][k].heure.heure << ":"
+    //             << setw(2) << setfill('0') << cheminsFinaux[i][j][k].heure.minute << endl;
+    //             cout << endl;
+    //         }
+    //     }
+    //     cout << endl;
+    // }
 
 
 
@@ -105,6 +105,14 @@ int main(){
     //
     // }
 
-
+    char choix;
+    do {
+        entreeUtilisateur(&stops, &lignes);
+        cout << "Voulez-vous entrer un trajet ? (O/N) : ";
+        cin >> choix;
+        system("clear");
+        cin.ignore(); // Ignore le caractère de nouvelle ligne restant dans le tampon
+    } while (choix == 'O' || choix == 'o');
+    
     return 0;
 }

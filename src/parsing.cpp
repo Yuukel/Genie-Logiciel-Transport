@@ -106,7 +106,6 @@ void readTrips(char* filePath, vector<Ligne>* lignes, unordered_map<string, stri
     file.close();
 }
 
-int cpt1;
 void completeLignes(char* filePath, vector<Ligne>* lignes, unordered_map<string, Arret>* stops, unordered_map<string, string>& tripHeadsigns, unordered_map<string, string>& tripRouteIds) {
     ifstream file(filePath);
 
@@ -194,14 +193,13 @@ void completeLignes(char* filePath, vector<Ligne>* lignes, unordered_map<string,
                     // Mettre à jour la map `stops` pour associer l'arrêt à la ligne
                     if (stops->find(adjustedStopId) != stops->end() && 
                     find(stops->at(adjustedStopId).lignes.begin(), stops->at(adjustedStopId).lignes.end(), it->idLigne) == stops->at(adjustedStopId).lignes.end()) {
-                        cpt1++;
                         stops->at(adjustedStopId).addLigne(it->idLigne);
                     }
                 }
             }
         }
     }
-    cout << "cpt1 = " << cpt1 << endl;
+
     nettoyerHorairesEtArrets(lignes);
 }
 

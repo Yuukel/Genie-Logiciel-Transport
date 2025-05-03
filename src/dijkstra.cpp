@@ -37,6 +37,7 @@ int Dans_lignes(string id, vector<Ligne>* arretsLignes){
     }
     return -1; // l'arret n'est pas dans la liste
 }
+
 vector<vector<Noeud>> Dijkstra(string depart, string arrivee, Horaire heure, unordered_map<string, Arret>* stops, vector<Ligne>* lignes){
     vector<vector<Noeud>> cheminFinal;
     vector<Noeud> chemin;
@@ -57,6 +58,7 @@ vector<vector<Noeud>> Dijkstra(string depart, string arrivee, Horaire heure, uno
                 heure.minute = 0;
             }
         }
+
         lignesDirectes = (*stops)[depart].getLignes();
         for(int i = 0 ; i < lignesDirectes.size() ; i++){
             int indexLigne = Dans_lignes(lignesDirectes[i], lignes);
@@ -84,9 +86,7 @@ vector<vector<Noeud>> Dijkstra(string depart, string arrivee, Horaire heure, uno
         }
         cheminFinal.push_back(chemin);
         if(cheminFinal.size() > 5) break;
-        cout << cheminFinal.size() << endl;
     }
-    cout << "Allez ciao monsieur" << endl;
     if(!chemin.empty() && (chemin.end()-1)->arretId == arrivee)
         return cheminFinal;
     else
@@ -94,12 +94,6 @@ vector<vector<Noeud>> Dijkstra(string depart, string arrivee, Horaire heure, uno
 }
 
 vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unordered_map<string, Arret>* stops, vector<Ligne>* lignes){
-    // Dijkstra's algorithm to find the shortest path between two stops
-    // depart : id de l'arret de depart
-    // arrivee : id de l'arret d'arrivee
-    // heure : heure de depart
-    // retourne le chemin le plus court entre les deux arrets
-
     vector<Noeud> arretsVisites;
     vector<Noeud> arretsVoisins;
 
@@ -108,7 +102,6 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
     vector<string> lignesDirectesArrivee;
 
     Noeud dernierTraite(depart,"Depart",-1,heure); // dernier noeud traite
-    dernierTraite.print();
 
     if(depart == arrivee){ // si le depart est le meme que l'arrivee
         cout << "Le depart est le meme que l'arrivee" << endl;
@@ -123,10 +116,6 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
     sort(lignesDirectesArrivee.begin(), lignesDirectesArrivee.end());
     set_intersection(lignesDirectesDepart.begin(), lignesDirectesDepart.end(),lignesDirectesArrivee.begin(), lignesDirectesArrivee.end(), back_inserter(lignesDirectes));
 
-    cout << "Print avant la destruction" << endl;
-    for(int i = 0 ; i < lignesDirectes.size() ; i++)
-        cout << lignesDirectes[i] << endl;
-
     for(int i = 0 ; i < lignesDirectes.size() ; i++){
         int indexLigne = Dans_lignes(lignesDirectes[i], lignes);
         int indexArretDepart = (*lignes)[indexLigne].getIndArret(depart);
@@ -140,14 +129,9 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
         }
     }
 
-    cout << "Print après la destruction" << endl;
-    for(int i = 0 ; i < lignesDirectes.size() ; i++)
-        cout << lignesDirectes[i] << endl;
-
     if(lignesDirectes.empty()){
         interPlein = false;
     }
-    // exit(0);
 
     // Variable utile dans le while
     int indActuel = 0; // indice de l'arret actuel dans la liste des arrets visites
@@ -157,14 +141,10 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
     Noeud tempo ;
     int indexLigne, indexHeure, indexArret, indexVoisin, j;
 
-    // definition du temps max
-    // (*stops)[arrivee].print();
-    // (*stops)[arrivee].printLignes();
     if(!interPlein)
         lignesDirectes = (*stops)[arrivee].getLignes(); // on récupère les lignes qui passent par l'arrêt d'arrivée
 
     for (int i = 0; i < lignesDirectes.size(); i++) {
-        // cout << "on entre dans le for (du max)" << endl;
         indexLigne = Dans_lignes(lignesDirectes[i], lignes); // on passe l'ID de la ligne
         if (indexLigne != -1) { // si la ligne existe
             indexArret = (*lignes)[indexLigne].getIndArret(arrivee); // on récupère l'indice de l'arrêt
@@ -172,19 +152,14 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
             if (temps_max < h) temps_max = h; // on compare les heures de passage
         }
     }
-    // cout << "temps_max : " << temps_max.heure << ":" << temps_max.minute << endl; // on affiche l'heure max
     if(!interPlein)
         lignesDirectes = (*stops)[depart].getLignes();
 
     while(dernierTraite.arretId != arrivee){ // tant que le noeud de depart n'est pas le meme que le noeud d'arrivee
-        // (*stops)[dernierTraite.arretId].print();
-        // (*stops)[dernierTraite.arretId].printLignes();
         // on cherche les voisins du dernier noeud traite
-        dernierTraite.print();
         //ajout des voisins directs du dernier noeud traite
         for (int i = 0; (i < lignesDirectes.size()) ; i++) {
             if(!arretsVisites.empty() && interPlein){
-                cout << "Je break le for" << endl;
                 break;
             }
 
@@ -215,29 +190,13 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
 
                 // Vérifie si l'arrêt suivant n'est pas déjà dans la liste des voisins
                 if (tempoArret != "-1") {
-                    // Si on peut continuer sur la même ligne, on privilégie cette option
-                    if (tempoLigne == dernierTraite.ligneId) {
-                        indexArret = (*lignes)[indexLigne].getIndArret(tempoArret);
-                        indexHeure = (*lignes)[indexLigne].getHorairesPrecis(dernierTraite.heure, indexArret);
+                    indexArret = (*lignes)[indexLigne].getIndArret(tempoArret);
+                    indexHeure = (*lignes)[indexLigne].getHorairesPrecis(dernierTraite.heure, indexArret);
 
-                        if (indexHeure != -1) {
-                            h = (*lignes)[indexLigne].horaires[indexArret][indexHeure];
-                            // On rajoute ce voisin à la liste s'il est plus optimal
-                            tempo = Noeud(tempoArret, tempoLigne, indActuel, h);
-                            arretsVoisins.push_back(tempo);
-                        }
-                    } else {
-                        // Si le voisin est dans une autre ligne, on peut ajouter, mais ça doit être traité avec attention
-                        // Par exemple, on pourrait vérifier si ce changement de ligne est nécessaire pour une meilleure optimisation
-                        // (par exemple, si la ligne change mais nous rapproche de l'arrivée plus rapidement).
-                        indexArret = (*lignes)[indexLigne].getIndArret(tempoArret);
-                        indexHeure = (*lignes)[indexLigne].getHorairesPrecis(dernierTraite.heure, indexArret);
-
-                        if (indexHeure != -1) {
-                            h = (*lignes)[indexLigne].horaires[indexArret][indexHeure];
-                            tempo = Noeud(tempoArret, tempoLigne, indActuel, h);
-                            arretsVoisins.push_back(tempo);
-                        }
+                    if (indexHeure != -1) {
+                        h = (*lignes)[indexLigne].horaires[indexArret][indexHeure];
+                        tempo = Noeud(tempoArret, tempoLigne, indActuel, h);
+                        arretsVoisins.push_back(tempo);
                     }
                 }
             }
@@ -250,9 +209,7 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
             tempoArret = (*lignes)[indexLigne].getSuivant(dernierTraite.arretId);
 
             indexArret = (*lignes)[indexLigne].getIndArret(tempoArret);
-            // cout << "indexArret = " << indexArret << endl;
             indexHeure = (*lignes)[indexLigne].getHorairesPrecis(dernierTraite.heure, indexArret);
-            // cout << "indexHeure = " << indexHeure << endl;
 
             if (indexHeure != -1) {
                 h = (*lignes)[indexLigne].horaires[indexArret][indexHeure];
@@ -263,8 +220,6 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
 
         // on cherche le voisin avec la plus petite heure de passage (normalement le premier de la liste)
 
-        // cout << "nb de voisin :" << arretsVoisins.size() << endl;
-        // cout << endl;
         if(arretsVoisins.empty()){ // si il n'y a pas de voisins
             cout << "Il n'y a pas de voisins" << endl;
             return {};
@@ -276,8 +231,6 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
         for(j = 0; j < arretsVoisins.size(); j++){ // pour chaque voisin
             if(arretsVoisins[j].ligneId == dernierTraite.ligneId){
                 tempo = arretsVoisins[j];
-                // cout << "On reste dans la ligne :";
-                // tempo.print();
                 break;
             }
             if(arretsVoisins[j].heure < tempo.heure){ // si l'heure de passage est plus petite que l'heure du meilleur voisin
@@ -301,13 +254,7 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
         }
         arretsVisites.push_back(dernierTraite); // on ajoute le dernier aux arrets visites
         if(arretsVisites.begin()->ligneId != dernierTraite.ligneId){
-            cout << "Je vais pop_back ça : ";
-            (arretsVisites.end()-1)->print();
             arretsVisites.pop_back();
-            cout << "J'ai pop_back ça : ";
-            dernierTraite.print();
-            cout << "Le dernier c'est ça : ";
-            (arretsVisites.end()-1)->print();
             dernierTraite.arretId = (arretsVisites.end()-1)->arretId;
             dernierTraite.ligneId = (arretsVisites.end()-1)->ligneId;
             dernierTraite.precedent = (arretsVisites.end()-1)->precedent;
@@ -319,11 +266,9 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
         lignesDirectes = (*stops)[tempo.arretId].getLignes();
         indActuel++ ;
 
-        // cout << "on retourne en haut ^^" << endl;
         arretsVoisins.clear();
     }
 
-    // cout << "L'algo a trouver un chemin ^^ " << endl;
     return construireChemin(arretsVisites, dernierTraite);
 }
 
