@@ -230,6 +230,109 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
     // cout << endl;
     afficherChemin2(cheminsFinaux[0], stops, lignes);
     cout << endl;
+
+    // Demander à l'utilisateur s'il souhaite effectuer ce chemin
+    cout << BLEU << BOLD << "Voulez-vous effectuer ce chemin ? (O/N) : " << RESET;
+    char choix;
+    cin >> choix;
+    cin.ignore(); // Ignorer le caractère de nouvelle ligne restant dans le tampon
+    if (choix == 'O' || choix == 'o') {
+        int etapes = 1;
+        int nb_etapes = 0;
+        for(int i = 0 ; i < cheminsFinaux.size() ; i++){
+            for(int j = 0 ; j < cheminsFinaux[i].size() ; j++){
+                nb_etapes += cheminsFinaux[i][j].size(); // Compter le nombre total d'étapes
+            }
+        }
+        cout << "Nombre d'étapes : " << nb_etapes << endl;
+        while(etapes <= nb_etapes){
+            char choixEtape;
+            string nomEtape;
+
+            // Trouver le nom de l'arrêt correspondant à l'étape actuelle
+            int compteur = 0;
+            for (int i = 0; i < cheminsFinaux.size(); i++) {
+                for (int j = 0; j < cheminsFinaux[i].size(); j++) {
+                    for (const auto& noeud : cheminsFinaux[i][j]) {
+
+                        compteur++;
+                        if (compteur == etapes) {
+                            nomEtape = (*stops)[noeud.arretId].stopName; // Récupérer le nom de l'arrêt
+                            break;
+                        }
+                    }
+                    if (!nomEtape.empty()) break;
+                }
+                if (!nomEtape.empty()) break;
+            }
+
+            cout << "Etape (" << etapes << " / " << nb_etapes << ") " << nomEtape << " : Valider ? (O/N)" << endl;
+            cin >> choixEtape;
+            cin.ignore(); // Ignorer le caractère de nouvelle ligne restant dans le tampon
+            if (choixEtape == 'O' || choixEtape == 'o') {
+                cout << "Etape " << etapes << " validée." << endl;
+            } 
+            
+            // Redéfinition du chemin
+            else {
+                cout << JAUNE << "Etape " << etapes << " annulée." << RESET << endl << endl;
+                // Re effectue le chemin avec un nouveau départ et une nouvelle heure
+                cout << BLEU << BOLD << "Entrez le nom de l'arrêt de départ : " << RESET;
+                getline(cin, departName);
+                departName = nettoyerUTF8(departName); // Nettoyer le nom de l'arrêt
+                cout << BLEU << BOLD << "Entrez l'heure de départ (HH MM) : " << RESET;
+                cin >> h1.heure >> h1.minute;
+                if (h1.heure < 0 || h1.heure > 23 || h1.minute < 0 || h1.minute > 59) {
+                    cerr << "\033[31mErreur : Heure de départ invalide.\033[0m" << endl;
+                    return; // Sortir si l'heure de départ est invalide
+                }
+                vector<string> depart = getStopIdByName(departName, *stops);
+                if (depart.empty() || arrivee.empty()) {
+                    if (depart.empty()) {
+                        cerr << "\033[31mErreur : Impossible de trouver l'arrêt de départ spécifié.\033[0m" << endl;
+                        erreurEntree(departName, stops); // Afficher l'erreur pour le départ
+                        cout << endl;
+                    }
+
+                    if (arrivee.empty()) {
+                        cerr << "\033[31mErreur : Impossible de trouver l'arrêt d'arrivée spécifié.\033[0m" << endl;
+                        erreurEntree(arriveeName, stops); // Afficher l'erreur pour l'arrivée
+                        cout << endl;
+                    }
+                    return; // Sortir avec une erreur
+                }
+                // Recalculer le chemin avec les nouveaux paramètres
+                cheminsFinaux.clear(); // Vider les anciens chemins
+                for (int i = 0; i < depart.size(); i++) {
+                    for (int j = 0; j < arrivee.size(); j++) {
+                        vector<vector<Noeud>> chemin = Dijkstra(depart[i], arrivee[j], h1, stops, lignes);
+                        if (!chemin.empty())
+                            cheminsFinaux.push_back(chemin);
+                    }
+                }
+                if (cheminsFinaux.empty()) {
+                    cout << ROUGE << "Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
+                    return; // Sortir si aucun chemin n'est trouvé
+                }
+                // Réinitialiser le nombre total d'étapes
+                nb_etapes = 0;
+                for (int i = 0; i < cheminsFinaux.size(); i++) {
+                    for (int j = 0; j < cheminsFinaux[i].size(); j++) {
+                        nb_etapes += cheminsFinaux[i][j].size(); // Compter le nombre total d'étapes
+                    }
+                }
+                // Afficher le chemin
+                afficherChemin2(cheminsFinaux[0], stops, lignes);
+                cout << endl;
+                etapes = 0; // Réinitialiser le compteur d'étapes
+            }
+            etapes++;
+        }
+        cout << endl << VERT << BOLD << "Vous êtes arrivé à votre destination !" << RESET << endl << endl;
+
+    } else {
+        cout << BLEU << BOLD << "Merci d'avoir utilisé notre service." << RESET << endl;
+    }
 }
 
 // Fonction pour calculer la distance de Levenshtein

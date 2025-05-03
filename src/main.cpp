@@ -11,6 +11,8 @@ unordered_map<string, string> tripHeadsigns;
 unordered_map<string, string> tripRouteIds;
 
 int main(){
+    system("clear");
+
     char stopsFilePath[] = "data/stops.txt";
     char tripsFilePath[] = "data/trips.txt";
     char stopTimesFilePath[] = "data/stop_times.txt";
