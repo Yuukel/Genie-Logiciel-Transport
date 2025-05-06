@@ -17,13 +17,13 @@ class Arret {
         string stopId;   // unique à chaque arret
         vector<string> lignes; // liste des IDs des lignes qui passent par cet arret
 
-        Arret(string id, string nom); // constructeur
+        Arret(string, string); // constructeur
         Arret(); // constructeur par défaut
 
         void print() const; // affiche les informations de l'arret
         void printLignes() const; // affiche les lignes qui passent par cet arret
         vector<string> getLignes() const; // liste des lignes qui passent par cet arret
-        void addLigne(string ligne); // ajoute une ligne à la liste des lignes qui passent par cet arret
+        void addLigne(string); // ajoute une ligne à la liste des lignes qui passent par cet arret
 };
 
 #endif

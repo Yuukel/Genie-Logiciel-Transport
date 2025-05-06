@@ -1,12 +1,4 @@
 #include "dijkstra.hpp"
-/*
-Noeud::Noeud(string id,string ligne, Noeud* prec, Horaire h){
-    arretId = id;
-    ligneId = ligne;
-    precedent = prec; // precedent = nullptr si c'est le premier noeud
-    heure = h; // heure de passage a cet arret
-}
-*/
 
 int Deja_visite(string id, vector<Noeud>* arretsVisites){
     // on verifie si l'arret est deja dans la liste des arrets visites
@@ -100,7 +92,7 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
     Noeud dernierTraite(depart,"Depart",-1,heure); // dernier noeud traite
 
     if(depart == arrivee){ // si le depart est le meme que l'arrivee
-        cout << "Le depart est le meme que l'arrivee" << endl;
+        cerr << "Le depart est le meme que l'arrivee" << endl;
         return {}; // on retourne le noeud de depart
     }
 
@@ -252,7 +244,7 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
         }
         // si le meilleur voisin a une heure plus grande que heureMax renvoyer une erreur
         if(tempo.heure > temps_max){ // si l'heure de passage est plus grande que l'heure max
-            cout << "L'heure de passage est plus grande que l'heure max" << endl;
+            cerr << "L'heure de passage est plus grande que l'heure max" << endl;
             Noeud erreur("Erreur", "Erreur", -1, temps_max); // on cree un noeud d'erreur
         }
 

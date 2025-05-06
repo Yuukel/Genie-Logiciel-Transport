@@ -143,13 +143,14 @@ void choixVille(vector<string>& stopIds, const unordered_map<string, Arret>& sto
 
     // Vérifie si la ville est déjà présente dans le vecteur
     auto it = unique(villeName.begin(), villeName.end());
+    auto it = unique(villeName.begin(), villeName.end());
     villeName.erase(it, villeName.end()); // Supprime les doublons
 
     if(villeName.size() == 1) {
         // cout << "Ville unique trouvée : " << villeName[0] << endl;
         return; // Sortir si une seule ville est trouvée
     }
-    
+
     // Choix utilisateur de la ville
     cout << BLEU << BOLD << "Veuillez choisir une ville pour l'arrêt " << BLANC <<stopName << RESET << BLEU << BOLD <<" : " << RESET;
     for (const auto& stop : villeName) {
@@ -220,7 +221,7 @@ vector<string> optionsChemin(const unordered_map<string, Arret>& stops, const ve
             vector<string> arretIds = getStopIdByName(arret, stops); // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
             // arret = getStopIdByName(arret, *stops)[0]; // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
             if(arretIds.empty()){
-                cout << "Aucun arrêt trouvé pour le nom '" << arret << "'." << endl;
+                cerr << "Aucun arrêt trouvé pour le nom '" << arret << "'." << endl;
                 erreurEntree(arret, &stops); // Afficher l'erreur pour l'arrêt à éviter
                 return {}; // Sortir si aucun arrêt n'est trouvé
             }
@@ -290,7 +291,7 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
     // Demander à l'utilisateur de saisir l'heure de départ sous un bon format
     while (true) {
         cin >> h1.heure >> h1.minute;
-    
+
         // Vérifier si l'entrée est valide
         if (cin.fail() || h1.heure < 0 || h1.heure > 23 || h1.minute < 0 || h1.minute > 59) {
             cin.clear(); // Réinitialiser l'état de cin
@@ -310,28 +311,21 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
         if (depart.empty()) {
             cerr << "\033[31mErreur : Impossible de trouver l'arrêt de départ spécifié.\033[0m" << endl;
             erreurEntree(departName, stops); // Afficher l'erreur pour le départ
-            cout << endl;
+            cerr << endl;
         }
 
         if (arrivee.empty()) {
             cerr << "\033[31mErreur : Impossible de trouver l'arrêt d'arrivée spécifié.\033[0m" << endl;
             erreurEntree(arriveeName, stops); // Afficher l'erreur pour l'arrivée
-            cout << endl;
+            cerr << endl;
         }
         return; // Sortir avec une erreur
     }
 
-
     if (depart == arrivee) {
-        cout << "\033[31mLe départ est le même que l'arrivée.\033[0m" << endl;
+        cerr << "\033[31mLe départ est le même que l'arrivée.\033[0m" << endl;
         return; // Sortir si le départ et l'arrivée sont identiques
     }
-
-    // Vérifier si l'heure de départ est valide
-    // if (h1.heure < 0 || h1.heure > 23 || h1.minute < 0 || h1.minute > 59) {
-    //     cerr << "\033[31mErreur : Heure de départ invalide.\033[0m" << endl;
-    //     return; // Sortir si l'heure de départ est invalide
-    // }
 
     if (depart.size() > 1){
         choixVille(depart, *stops); // Demander à l'utilisateur de choisir une ville si plusieurs arrêts sont trouvés
@@ -494,27 +488,19 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
 
     vector<vector<vector<Noeud>>> cheminsFinaux;
     for(int i = 0 ; i < depart.size() ; i++){
-        // cout << "depart[i] = " << depart[i] << endl;
-        // for(int j = 0 ; j < arrivee.size() ; j++){
-            // cout << "arrivee[j] = " << arrivee[j] << endl;
-            // h1.print();
-            vector<vector<Noeud>> chemin = Dijkstra(depart[i], arrivee[i], h1, stops, lignes, arretsEviter);
-            if(!chemin.empty()){
-                cheminsFinaux.push_back(chemin);
-                h1 = cheminsFinaux[i][cheminsFinaux[i].size()-1][cheminsFinaux[i][cheminsFinaux[i].size()-1].size()-1].heure;
-                h1.ajouterMinutes(1);
-            }
-            else{
-                cout << ROUGE << "Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
-                return; // Sortir si aucun chemin n'est trouvé
-            }
-        // }
+        vector<vector<Noeud>> chemin = Dijkstra(depart[i], arrivee[i], h1, stops, lignes, arretsEviter);
+        if(!chemin.empty()){
+            cheminsFinaux.push_back(chemin);
+            h1 = cheminsFinaux[i][cheminsFinaux[i].size()-1][cheminsFinaux[i][cheminsFinaux[i].size()-1].size()-1].heure;
+            h1.ajouterMinutes(1);
+        } else{
+            cerr << ROUGE << "Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
+            return; // Sortir si aucun chemin n'est trouvé
+        }
     }
 
-    // cout << cheminsFinaux.size() << endl;
-
     if(cheminsFinaux.empty()){
-        cout << ROUGE << "Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
+        cerr << ROUGE << "Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
         return; // Sortir si aucun chemin n'est trouvé
     }
     else{
@@ -579,7 +565,7 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
                 getline(cin, departName);
                 departName = nettoyerUTF8(departName); // Nettoyer le nom de l'arrêt
                 if(departName == arriveeName){
-                    cout << "\033[31mLe départ est le même que l'arrivée.\033[0m" << endl;
+                    cerr << "\033[31mLe départ est le même que l'arrivée.\033[0m" << endl;
                     return; // Sortir si le départ et l'arrivée sont identiques
                 }
                 cout << BLEU << BOLD << "Entrez l'heure de départ (HH MM) : " << RESET;
@@ -593,13 +579,13 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
                     if (depart.empty()) {
                         cerr << "\033[31mErreur : Impossible de trouver l'arrêt de départ spécifié.\033[0m" << endl;
                         erreurEntree(departName, stops); // Afficher l'erreur pour le départ
-                        cout << endl;
+                        cerr << endl;
                     }
 
                     if (arrivee.empty()) {
                         cerr << "\033[31mErreur : Impossible de trouver l'arrêt d'arrivée spécifié.\033[0m" << endl;
                         erreurEntree(arriveeName, stops); // Afficher l'erreur pour l'arrivée
-                        cout << endl;
+                        cerr << endl;
                     }
                     return; // Sortir avec une erreur
                 }
@@ -613,7 +599,7 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
                     }
                 }
                 if (cheminsFinaux.empty()) {
-                    cout << ROUGE << "Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
+                    cerr << ROUGE << "Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
                     return; // Sortir si aucun chemin n'est trouvé
                 }
                 // Réinitialiser le nombre total d'étapes
@@ -714,7 +700,7 @@ void afficherChemin2(const vector<vector<Noeud>>& chemin, unordered_map<string, 
     int taille = 0;
 
     if (chemin.empty()) {
-        cout << ROUGE << "Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
+        cerr << ROUGE << "Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
         return;
     }
 
