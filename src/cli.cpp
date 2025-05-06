@@ -196,16 +196,16 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
             arret = getStopIdByName(arret, *stops)[0]; // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
             arretsPrivilegier.push_back(arret);
         }
-        // Afficher les arrêts à éviter
-        if(arretsPrivilegier.empty()) {
-            cout << "Aucun arrêt intermédiaire." << endl;
-        } else {
-            cout << "Arrêts intermédiaires : ";
-            for (const auto& arret : arretsPrivilegier) {
-                cout << arret << " ";
-            }
-            cout << endl;
+    }
+    // Afficher les arrêts à éviter
+    if(arretsPrivilegier.empty()) {
+        cout << "Aucun arrêt intermédiaire." << endl;
+    } else {
+        cout << "Arrêts intermédiaires : ";
+        for (const auto& arret : arretsPrivilegier) {
+            cout << arret << " ";
         }
+        cout << endl;
     }
 
     // Demande à l'utilisateur quels arrêts il souhaite éviter
@@ -229,16 +229,16 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
             arret = getStopIdByName(arret, *stops)[0]; // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
             arretsEviter.push_back(arret);
         }
-        // Afficher les arrêts à éviter
-        if(arretsEviter.empty()) {
-            cout << "Aucun arrêt à éviter." << endl;
-        } else {
-            cout << "Arrêts à éviter : ";
-            for (const auto& arret : arretsEviter) {
-                cout << arret << " ";
-            }
-            cout << endl;
+    }
+    // Afficher les arrêts à éviter
+    if(arretsEviter.empty()) {
+        cout << "Aucun arrêt à éviter." << endl;
+    } else {
+        cout << "Arrêts à éviter : ";
+        for (const auto& arret : arretsEviter) {
+            cout << arret << " ";
         }
+        cout << endl;
     }
 
     // ajouter le code de vérification de la bonne ville quand il y a plusieurs départ en retirant les autres du vector
@@ -248,10 +248,10 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
         arrivee.insert(arrivee.begin()+i, arretsPrivilegier[i]);
     }
 
-    for(int i = 0 ; i < depart.size() ; i++){
-        cout << "depart i : " << depart[i] << endl;
-        cout << "arrivee i : " << arrivee[i] << endl;
-    }
+    // for(int i = 0 ; i < depart.size() ; i++){
+    //     cout << "depart i : " << depart[i] << endl;
+    //     cout << "arrivee i : " << arrivee[i] << endl;
+    // }
 
     vector<vector<vector<Noeud>>> cheminsFinaux;
     for(int i = 0 ; i < depart.size() ; i++){
@@ -265,7 +265,7 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
         // }
     }
 
-    cout << cheminsFinaux.size() << endl;
+    // cout << cheminsFinaux.size() << endl;
 
     if(cheminsFinaux.empty()){
         cout << ROUGE << "Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
@@ -318,7 +318,7 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
             cin >> choixEtape;
             cin.ignore(); // Ignorer le caractère de nouvelle ligne restant dans le tampon
             if (choixEtape == 'O' || choixEtape == 'o') {
-                cout << "Etape " << etapes << " validée." << endl;
+                cout << VERT << BOLD << "Etape " << etapes << " validée." << RESET << endl;
             }
 
             // Redéfinition du chemin
