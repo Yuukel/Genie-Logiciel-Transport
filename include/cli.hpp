@@ -28,7 +28,7 @@ string getCityIdByName(const string&, const unordered_map<string, string>&);
 void choixVille(const string&, const unordered_map<string, Arret>&);
 void entreeUtilisateur(unordered_map<string, Arret>*, vector<Ligne>*);
 int levenshteinDistance(const string&, const string&);
-void erreurEntree(const string&, unordered_map<string, Arret>*);
+void erreurEntree(const string&, const unordered_map<string, Arret>*);
 int compterMultiOctets(const string&);
 int compterSequencesCouleurs(const string&);
 

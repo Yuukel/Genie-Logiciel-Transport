@@ -143,7 +143,6 @@ void choixVille(vector<string>& stopIds, const unordered_map<string, Arret>& sto
 
     // Vérifie si la ville est déjà présente dans le vecteur
     auto it = unique(villeName.begin(), villeName.end());
-    auto it = unique(villeName.begin(), villeName.end());
     villeName.erase(it, villeName.end()); // Supprime les doublons
 
     if(villeName.size() == 1) {
