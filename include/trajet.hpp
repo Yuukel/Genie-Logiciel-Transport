@@ -36,6 +36,15 @@ struct Horaire {
     void print() const{
         cout << heure << ":" << minute << endl;
     }
+
+    void ajouterMinutes(int nb){
+        minute += nb;
+        while(minute >= 60){
+            minute -= 60;
+            heure++;
+        }
+        while(heure >= 24) heure -= 24;
+    }
 } typedef Horaire;
 
 class Ligne {
