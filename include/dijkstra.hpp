@@ -40,8 +40,8 @@ int Deja_visite(string id, vector<Noeud>* arretsVisites);
 int Dans_voisins(string id, string ligne, vector<Noeud>* arretsVoisin);
 int Dans_lignes(string id, vector<Ligne>* arretsLignes);
 
-vector<vector<Noeud>> Dijkstra(string depart, string arrivee, Horaire heureDepart, unordered_map<string, Arret>* stops, vector<Ligne>* lignes);
-vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unordered_map<string, Arret>* stops, vector<Ligne>* lignes);
+vector<vector<Noeud>> Dijkstra(string depart, string arrivee, Horaire heureDepart, unordered_map<string, Arret>* stops, vector<Ligne>* lignes, vector<string> arretsEviter);
+vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unordered_map<string, Arret>* stops, vector<Ligne>* lignes, vector<string> arretsEviter);
 vector<Noeud> construireChemin(vector<Noeud> arretsVisites, Noeud fin);
 
 #endif

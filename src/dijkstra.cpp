@@ -38,7 +38,7 @@ int Dans_lignes(string id, vector<Ligne>* arretsLignes){
     return -1; // l'arret n'est pas dans la liste
 }
 
-vector<vector<Noeud>> Dijkstra(string depart, string arrivee, Horaire heure, unordered_map<string, Arret>* stops, vector<Ligne>* lignes){
+vector<vector<Noeud>> Dijkstra(string depart, string arrivee, Horaire heure, unordered_map<string, Arret>* stops, vector<Ligne>* lignes, vector<string> arretsEviter){
     vector<vector<Noeud>> cheminFinal;
     vector<Noeud> chemin;
 
@@ -80,7 +80,7 @@ vector<vector<Noeud>> Dijkstra(string depart, string arrivee, Horaire heure, uno
             }
         }
 
-        chemin = DijkstraAlgo(depart, arrivee, hmin, stops, lignes);
+        chemin = DijkstraAlgo(depart, arrivee, hmin, stops, lignes, arretsEviter);
         if(chemin.empty()){
             break;
         }
@@ -93,7 +93,7 @@ vector<vector<Noeud>> Dijkstra(string depart, string arrivee, Horaire heure, uno
         return {};
 }
 
-vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unordered_map<string, Arret>* stops, vector<Ligne>* lignes){
+vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unordered_map<string, Arret>* stops, vector<Ligne>* lignes, vector<string> arretsEviter){
     vector<Noeud> arretsVisites;
     vector<Noeud> arretsVoisins;
 
@@ -105,7 +105,7 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
 
     if(depart == arrivee){ // si le depart est le meme que l'arrivee
         cout << "Le depart est le meme que l'arrivee" << endl;
-        return {dernierTraite}; // on retourne le noeud de depart
+        return {}; // on retourne le noeud de depart
     }
 
     lignesDirectesDepart = (*stops)[depart].getLignes();
@@ -116,6 +116,7 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
     sort(lignesDirectesArrivee.begin(), lignesDirectesArrivee.end());
     set_intersection(lignesDirectesDepart.begin(), lignesDirectesDepart.end(),lignesDirectesArrivee.begin(), lignesDirectesArrivee.end(), back_inserter(lignesDirectes));
 
+    // checker avec les arrêts à éviter
     for(int i = 0 ; i < lignesDirectes.size() ; i++){
         int indexLigne = Dans_lignes(lignesDirectes[i], lignes);
         int indexArretDepart = (*lignes)[indexLigne].getIndArret(depart);
@@ -126,7 +127,19 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
         if(hDepart > hArrivee){
             lignesDirectes.erase(lignesDirectes.begin()+i);
             i--;
+        } else{
+            for(int j = 0 ; j < arretsEviter.size() ; j++){
+                for(int k = 0 ; k < (*lignes)[indexLigne].stopIds.size() ; k++){
+                    if((*lignes)[indexLigne].stopIds[k] == arretsEviter[j]){
+                        lignesDirectes.erase(lignesDirectes.begin()+i);
+                        i--;
+                        j = arretsEviter.size();
+                        k = (*lignes)[indexLigne].stopIds.size();
+                    }
+                }
+            }
         }
+
     }
 
     if(lignesDirectes.empty()){
@@ -158,7 +171,7 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
     while(dernierTraite.arretId != arrivee){ // tant que le noeud de depart n'est pas le meme que le noeud d'arrivee
         // on cherche les voisins du dernier noeud traite
         //ajout des voisins directs du dernier noeud traite
-        for (int i = 0; (i < lignesDirectes.size()) ; i++) {
+        for (int i = 0; i < lignesDirectes.size() ; i++) {
             if(!arretsVisites.empty() && interPlein){
                 break;
             }
@@ -168,6 +181,10 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
             if (indexLigne != -1) {
                 tempoLigne = (*lignes)[indexLigne].idLigne;
                 tempoArret = (*lignes)[indexLigne].getSuivant(dernierTraite.arretId); // Trouve l'arrêt suivant
+
+                for(int j = 0 ; j < arretsEviter.size() ; j++){
+                    if(tempoArret == arretsEviter[i]) tempoArret = "FIN";
+                }
 
                 // Si c'est un terminus, on passe au voisin suivant
                 if (tempoArret == "FIN") continue;

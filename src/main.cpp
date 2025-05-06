@@ -115,6 +115,6 @@ int main(){
         system("clear");
         cin.ignore(); // Ignore le caractère de nouvelle ligne restant dans le tampon
     } while (choix == 'O' || choix == 'o');
-    
+
     return 0;
 }
