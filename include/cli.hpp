@@ -21,16 +21,16 @@
 #define RESET "\033[0m"
 #define SOULIGNE "\033[4m"
 
-string normaliserNom(const string& str);
-vector<string> getStopIdByName(const string& stopName, const unordered_map<string, Arret>& stops);
-string getCityNameById(const string& cityId, const unordered_map<string, string>& villes);
-string getCityIdByName(const string& cityName, const unordered_map<string, string>& villes);
-void choixVille(const string& stopName, const unordered_map<string, Arret>& stops);
-void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* lignes);
-int levenshteinDistance(const string& s1, const string& s2);
-void erreurEntree(const string& nameArret, unordered_map<string, Arret>* stops);
-int compterMultiOctets(const string& str);
-int compterSequencesCouleurs(const std::string& str);
+string normaliserNom(const string&);
+vector<string> getStopIdByName(const string&, const unordered_map<string, Arret>&);
+string getCityNameById(const string&, const unordered_map<string, string>&);
+string getCityIdByName(const string&, const unordered_map<string, string>&);
+void choixVille(const string&, const unordered_map<string, Arret>&);
+void entreeUtilisateur(unordered_map<string, Arret>*, vector<Ligne>*);
+int levenshteinDistance(const string&, const string&);
+void erreurEntree(const string&, unordered_map<string, Arret>*);
+int compterMultiOctets(const string&);
+int compterSequencesCouleurs(const string&);
 
-void afficherChemin2(const vector<vector<Noeud>>& chemin, unordered_map<std::string, Arret>* stops, vector<Ligne>* lignes);
+void afficherChemin2(const vector<vector<Noeud>>&, unordered_map<string, Arret>*, vector<Ligne>*);
 #endif

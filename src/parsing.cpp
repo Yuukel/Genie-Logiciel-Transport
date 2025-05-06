@@ -47,11 +47,11 @@ void readStop(char * filePath, unordered_map<string, Arret>* stops){
         if (stops->find(stopId) != stops->end()) {
             continue; // On fusionne les arrêts ayant plusieurs itérations mais un numéro différent (impact potentiel sur le sens)
         }
-        
+
         // Créer un objet Arret et l'ajouter à la map
         Arret arret(stopId, stopName);
         (*stops)[stopId] = arret;
-        
+
     }
 
     file.close();
@@ -229,7 +229,7 @@ void nettoyerHorairesEtArrets(vector<Ligne>* lignes) {
             }
         }
 
-        ligne.stopIds = std::move(stopIds_uniques);
-        ligne.horaires = std::move(horaires_uniques);
+        ligne.stopIds = move(stopIds_uniques);
+        ligne.horaires = move(horaires_uniques);
     }
 }

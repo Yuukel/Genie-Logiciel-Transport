@@ -1,12 +1,4 @@
 #include "dijkstra.hpp"
-/*
-Noeud::Noeud(string id,string ligne, Noeud* prec, Horaire h){
-    arretId = id;
-    ligneId = ligne;
-    precedent = prec; // precedent = nullptr si c'est le premier noeud
-    heure = h; // heure de passage a cet arret
-}
-*/
 
 int Deja_visite(string id, vector<Noeud>* arretsVisites){
     // on verifie si l'arret est deja dans la liste des arrets visites

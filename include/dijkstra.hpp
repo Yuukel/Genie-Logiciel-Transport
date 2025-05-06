@@ -36,12 +36,12 @@ struct Noeud {
     }
 };
 
-int Deja_visite(string id, vector<Noeud>* arretsVisites);
-int Dans_voisins(string id, string ligne, vector<Noeud>* arretsVoisin);
-int Dans_lignes(string id, vector<Ligne>* arretsLignes);
+int Deja_visite(string, vector<Noeud>*);
+int Dans_voisins(string, string, vector<Noeud>*);
+int Dans_lignes(string, vector<Ligne>*);
 
-vector<vector<Noeud>> Dijkstra(string depart, string arrivee, Horaire heureDepart, unordered_map<string, Arret>* stops, vector<Ligne>* lignes, vector<string> arretsEviter);
-vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unordered_map<string, Arret>* stops, vector<Ligne>* lignes, vector<string> arretsEviter);
-vector<Noeud> construireChemin(vector<Noeud> arretsVisites, Noeud fin);
+vector<vector<Noeud>> Dijkstra(string, string, Horaire, unordered_map<string, Arret>*, vector<Ligne>*, vector<string>);
+vector<Noeud> DijkstraAlgo(string, string, Horaire, unordered_map<string, Arret>*, vector<Ligne>*, vector<string>);
+vector<Noeud> construireChemin(vector<Noeud>, Noeud);
 
 #endif

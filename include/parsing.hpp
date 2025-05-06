@@ -14,12 +14,12 @@
 
 using namespace std;
 
-void readStop(char * filePath, unordered_map<string, Arret>* stops);
+void readStop(char *, unordered_map<string, Arret>*);
 
-void readTrips(char* filePath, vector<Ligne>* lignes, unordered_map<string, string>& tripHeadsigns, unordered_map<string, string>& tripRouteIds);
+void readTrips(char*, vector<Ligne>*, unordered_map<string, string>&, unordered_map<string, string>&);
 
-void completeLignes(char* filePath, vector<Ligne>* lignes, unordered_map<string, Arret>* stops, unordered_map<string, string>& tripHeadsigns, unordered_map<string, string>& tripRouteIds);
+void completeLignes(char*, vector<Ligne>*, unordered_map<string, Arret>*, unordered_map<string, string>&, unordered_map<string, string>&);
 
-void nettoyerHorairesEtArrets(vector<Ligne>* lignes);
+void nettoyerHorairesEtArrets(vector<Ligne>*);
 
 #endif
