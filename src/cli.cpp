@@ -387,7 +387,7 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
     vector<string> arretsPrivilegier = optionsChemin(*stops, depart, arrivee); // Obtenir les arrêts à privilégier
 
     if (arretsPrivilegier.empty()) {
-        cout << "Aucun arrêt à privilégier." << endl;
+        cerr << "Aucun arrêt à privilégier." << endl;
     } else {
         cout << "Arrêts à privilégier : ";
         for (const auto& arret : arretsPrivilegier) {
