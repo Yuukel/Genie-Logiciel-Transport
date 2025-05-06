@@ -28,9 +28,10 @@ string getCityIdByName(const string& cityName, const unordered_map<string, strin
 void choixVille(const string& stopName, const unordered_map<string, Arret>& stops);
 void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* lignes);
 int levenshteinDistance(const string& s1, const string& s2);
-void erreurEntree(const string& nameArret, unordered_map<string, Arret>* stops);
+void erreurEntree(const string& nameArret, const unordered_map<string, Arret>* stops);
 int compterMultiOctets(const string& str);
 int compterSequencesCouleurs(const std::string& str);
-
+vector<string> optionsChemin(const unordered_map<string, Arret>& stops, const vector<string>& departName, const vector<string>& arriveeName);
+void retireDoublonsCheminRetirer(vector<string>& cheminRetirer, const vector<string>& departName, const vector<string>& arriveeName);
 void afficherChemin2(const vector<vector<Noeud>>& chemin, unordered_map<std::string, Arret>* stops, vector<Ligne>* lignes);
 #endif

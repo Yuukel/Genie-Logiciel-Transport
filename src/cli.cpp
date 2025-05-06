@@ -142,7 +142,7 @@ void choixVille(vector<string>& stopIds, const unordered_map<string, Arret>& sto
     }
 
     // Vérifie si la ville est déjà présente dans le vecteur
-    auto it = std::unique(villeName.begin(), villeName.end());
+    auto it = unique(villeName.begin(), villeName.end());
     villeName.erase(it, villeName.end()); // Supprime les doublons
 
     if(villeName.size() == 1) {
@@ -195,6 +195,86 @@ void choixVille(vector<string>& stopIds, const unordered_map<string, Arret>& sto
     stopIds.push_back(bonStopId); // Ajouter l'ID de l'arrêt correspondant à la ville choisie
 
     // cout << "DEBUG sortie de fonction: " << stopIds[0] << endl;
+}
+
+vector<string> optionsChemin(const unordered_map<string, Arret>& stops, const vector<string>& departName, const vector<string>& arriveeName) {
+    // Demande à l'utilisateur quels arrêts il souhaite privilégier
+    string reponse;
+    
+    cin >> reponse;
+    vector<string> arrets;
+    if (reponse != "N" && reponse != "n") {
+        cout << BLEU << BOLD << "Entrez les arrêts intermédiaires (séparés de cette manière 'Campus ; Derain') : " << RESET;
+        string arretsInput;
+        cin.ignore(); // Ignorer le caractère de nouvelle ligne restant dans le tampon
+        getline(cin, arretsInput);
+        stringstream ss(arretsInput);
+        string arret;
+        while (getline(ss, arret, ';')) {
+            arret = nettoyerUTF8(arret); // Nettoyer le nom de l'arrêt
+
+            // Supprimer les espaces en début et en fin de chaîne
+            arret.erase(arret.find_last_not_of(" \t") + 1); // Supprimer les espaces en fin
+            arret.erase(0, arret.find_first_not_of(" \t")); // Supprimer les espaces en début
+
+            vector<string> arretIds = getStopIdByName(arret, stops); // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
+            // arret = getStopIdByName(arret, *stops)[0]; // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
+            if(arretIds.empty()){
+                cout << "Aucun arrêt trouvé pour le nom '" << arret << "'." << endl;
+                erreurEntree(arret, &stops); // Afficher l'erreur pour l'arrêt à éviter
+                return {}; // Sortir si aucun arrêt n'est trouvé
+            }
+            else if(arretIds.size() > 1){
+                choixVille(arretIds, stops); // Demander à l'utilisateur de choisir une ville si plusieurs arrêts sont trouvés
+                arret = arretIds[0]; // Prendre le premier ID trouvé
+            }
+            else{
+                arret = arretIds[0]; // Prendre le premier ID trouvé
+            }
+
+            // Vérifie si l'arret != departName et != arriveeName
+            bool ignorerArret = false;
+            for (const auto& depart : departName) {
+                if (arret == depart) {
+                    cout << JAUNE << "L'arrêt '" << BOLD << depart << RESET << JAUNE << "' est le même que le départ/l'un des départs (intermédiares)." << RESET << endl;
+                    ignorerArret = true;
+                    break;
+                }
+            }
+            if (ignorerArret) continue; // Sortir si l'arrêt est le même que le départ
+            for (const auto& arrivee : arriveeName) {
+                if (arret == arrivee) {
+                    cout << JAUNE << "L'arrêt '" << BOLD << arrivee << RESET << JAUNE << "' est le même que l'arrivée/l'un des arrivés (intermédiaires)." << RESET << endl;
+                    ignorerArret = true;
+                    break;
+                }
+            }
+            if (ignorerArret) continue; // Sortir si l'arrêt est le même que l'arrivée
+            
+            arrets.push_back(arret);
+        }
+    }
+    return arrets; // Retourner les arrêts intermédiaires
+}
+
+void retireDoublonsCheminRetirer(vector<string>& cheminRetirer, vector<string>& departName, vector<string>& arriveeName) {
+    // Supprimer les arrêts de départ et d'arrivée du vecteur cheminRetirer
+    for (const auto& depart : departName) {
+        // Affiche si l'arrêt de départ est le même que l'un des arrêts à éviter
+        if (find(cheminRetirer.begin(), cheminRetirer.end(), depart) != cheminRetirer.end()) {
+            cout << JAUNE << "L'arrêt '" << BOLD << depart << RESET << JAUNE << "' est le même que le départ/l'un des départs." << RESET << endl;
+            // Retirer l'arrêt de départ du vecteur cheminRetirer
+            cheminRetirer.erase(remove(cheminRetirer.begin(), cheminRetirer.end(), depart), cheminRetirer.end());
+        }
+    }
+    for (const auto& arrivee : arriveeName) {
+        // Affiche si l'arrêt d'arrivée est le même que l'un des arrêts à éviter
+        if (find(cheminRetirer.begin(), cheminRetirer.end(), arrivee) != cheminRetirer.end()) {
+            cout << JAUNE << "L'arrêt '" << BOLD << arrivee << RESET << JAUNE << "' est le même que l'arrivée/l'un des arrivés." << RESET << endl;
+            // Retirer l'arrêt d'arrivée du vecteur cheminRetirer
+            cheminRetirer.erase(remove(cheminRetirer.begin(), cheminRetirer.end(), arrivee), cheminRetirer.end());
+        }
+    }
 }
 
 void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* lignes) {
@@ -262,112 +342,75 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
     }
 
     // Demande à l'utilisateur quels arrêts il souhaite privilégier
-    string reponse;
-    cout << BLEU << BOLD << "Voulez vous rentrer des arrêts intermédiaires ? (O/N) " << RESET;
-    cin >> reponse;
-    vector<string> arretsPrivilegier;
-    if (reponse != "N" && reponse != "n") {
-        cout << BLEU << BOLD << "Entrez les arrêts intermédiaires (séparés de cette manière 'Campus ; Derain') : " << RESET;
-        string arretsPrivilegierInput;
-        cin.ignore(); // Ignorer le caractère de nouvelle ligne restant dans le tampon
-        getline(cin, arretsPrivilegierInput);
-        stringstream ss(arretsPrivilegierInput);
-        string arret;
-        while (getline(ss, arret, ';')) {
-            arret = nettoyerUTF8(arret); // Nettoyer le nom de l'arrêt
+    // string reponse;
+    // cout << BLEU << BOLD << "Voulez vous rentrer des arrêts intermédiaires ? (O/N) " << RESET;
+    // cin >> reponse;
+    // vector<string> arretsPrivilegier;
+    // if (reponse != "N" && reponse != "n") {
+    //     cout << BLEU << BOLD << "Entrez les arrêts intermédiaires (séparés de cette manière 'Campus ; Derain') : " << RESET;
+    //     string arretsPrivilegierInput;
+    //     cin.ignore(); // Ignorer le caractère de nouvelle ligne restant dans le tampon
+    //     getline(cin, arretsPrivilegierInput);
+    //     stringstream ss(arretsPrivilegierInput);
+    //     string arret;
+    //     while (getline(ss, arret, ';')) {
+    //         arret = nettoyerUTF8(arret); // Nettoyer le nom de l'arrêt
 
-            // Supprimer les espaces en début et en fin de chaîne
-            arret.erase(arret.find_last_not_of(" \t") + 1); // Supprimer les espaces en fin
-            arret.erase(0, arret.find_first_not_of(" \t")); // Supprimer les espaces en début
+    //         // Supprimer les espaces en début et en fin de chaîne
+    //         arret.erase(arret.find_last_not_of(" \t") + 1); // Supprimer les espaces en fin
+    //         arret.erase(0, arret.find_first_not_of(" \t")); // Supprimer les espaces en début
 
-            vector<string> arretIds = getStopIdByName(arret, *stops); // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
-            // arret = getStopIdByName(arret, *stops)[0]; // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
-            if(arretIds.empty()){
-                cout << "Aucun arrêt trouvé pour le nom '" << arret << "'." << endl;
-                erreurEntree(arret, stops); // Afficher l'erreur pour l'arrêt à éviter
-                return; // Sortir si aucun arrêt n'est trouvé
-            }
-            else if(arretIds.size() > 1){
-                choixVille(arretIds, *stops); // Demander à l'utilisateur de choisir une ville si plusieurs arrêts sont trouvés
-                arret = arretIds[0]; // Prendre le premier ID trouvé
-            }
-            else{
-                arret = arretIds[0]; // Prendre le premier ID trouvé
-            }
+    //         vector<string> arretIds = getStopIdByName(arret, *stops); // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
+    //         // arret = getStopIdByName(arret, *stops)[0]; // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
+    //         if(arretIds.empty()){
+    //             cout << "Aucun arrêt trouvé pour le nom '" << arret << "'." << endl;
+    //             erreurEntree(arret, stops); // Afficher l'erreur pour l'arrêt à éviter
+    //             return; // Sortir si aucun arrêt n'est trouvé
+    //         }
+    //         else if(arretIds.size() > 1){
+    //             choixVille(arretIds, *stops); // Demander à l'utilisateur de choisir une ville si plusieurs arrêts sont trouvés
+    //             arret = arretIds[0]; // Prendre le premier ID trouvé
+    //         }
+    //         else{
+    //             arret = arretIds[0]; // Prendre le premier ID trouvé
+    //         }
             
-            arretsPrivilegier.push_back(arret);
-        }
-    }
-    // Afficher les arrêts à éviter
-    if(arretsPrivilegier.empty()) {
-        cout << "Aucun arrêt intermédiaire." << endl;
+    //         arretsPrivilegier.push_back(arret);
+    //     }
+    // }
+    // // Afficher les arrêts à éviter
+    // if(arretsPrivilegier.empty()) {
+    //     cout << "Aucun arrêt intermédiaire." << endl;
+    // } else {
+    //     cout << "Arrêts intermédiaires : ";
+    //     for (const auto& arret : arretsPrivilegier) {
+    //         cout << arret << " ";
+    //     }
+    //     cout << endl;
+    // }
+
+    cout << BLEU << BOLD << "Voulez vous rentrer des arrêts intermédiaires ? (O/N) " << RESET;
+    vector<string> arretsPrivilegier = optionsChemin(*stops, depart, arrivee); // Obtenir les arrêts à privilégier
+
+    if (arretsPrivilegier.empty()) {
+        cout << "Aucun arrêt à privilégier." << endl;
     } else {
-        cout << "Arrêts intermédiaires : ";
+        cout << "Arrêts à privilégier : ";
         for (const auto& arret : arretsPrivilegier) {
             cout << arret << " ";
         }
         cout << endl;
     }
-
     for(int i = 0 ; i < arretsPrivilegier.size() ; i++){
         depart.push_back(arretsPrivilegier[i]);
         arrivee.insert(arrivee.begin()+i, arretsPrivilegier[i]);
     }
 
-    // Demande à l'utilisateur quels arrêts il souhaite éviter
     cout << BLEU << BOLD << "Voulez vous rentrer des arrêts à éviter ? (O/N) " << RESET;
-    cin >> reponse;
-    vector<string> arretsEviter;
-    if (reponse != "N" && reponse != "n") {
-        cout << BLEU << BOLD << "Entrez les arrêts à éviter (séparés de cette manière 'Campus ; Derain') : " << RESET;
-        string arretsEviterInput;
-        cin.ignore(); // Ignorer le caractère de nouvelle ligne restant dans le tampon
-        getline(cin, arretsEviterInput);
-        stringstream ss(arretsEviterInput);
-        string arret;
-        while (getline(ss, arret, ';')) {
-            string tempName = arret; // Conserver le nom de l'arrêt pour l'affichage
-            arret = nettoyerUTF8(arret); // Nettoyer le nom de l'arrêt
+    vector<string> arretsEviter = optionsChemin(*stops, depart, arrivee); // Obtenir les arrêts à éviter
+    retireDoublonsCheminRetirer(arretsEviter, depart, arrivee); // Supprimer les arrêts de départ et d'arrivée du vecteur cheminRetirer
 
-            // Supprimer les espaces en début et en fin de chaîne
-            arret.erase(arret.find_last_not_of(" \t") + 1); // Supprimer les espaces en fin
-            arret.erase(0, arret.find_first_not_of(" \t")); // Supprimer les espaces en début
-
-            vector<string> arretIds = getStopIdByName(arret, *stops); // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
-            // arret = getStopIdByName(arret, *stops)[0]; // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
-            if(arretIds.empty()){
-                cout << "Aucun arrêt trouvé pour le nom '" << arret << "'." << endl;
-                erreurEntree(arret, stops); // Afficher l'erreur pour l'arrêt à éviter
-                return; // Sortir si aucun arrêt n'est trouvé
-            }
-            else if(arretIds.size() > 1){
-                choixVille(arretIds, *stops); // Demander à l'utilisateur de choisir une ville si plusieurs arrêts sont trouvés
-                arret = arretIds[0]; // Prendre le premier ID trouvé
-            }
-            else{
-                arret = arretIds[0]; // Prendre le premier ID trouvé
-            }
-
-            // Véfifie si l'arret à éviter est déjà dans le vector d'arrêts à privilégier
-            int trouve = 0;
-            for(int i = 0 ; i < arretsPrivilegier.size() ; i++){
-                if(arret == arretsPrivilegier[i]){
-                    cout << "L'arrêt '" << arret << "' est déjà dans la liste des arrêts à privilégier." << endl;
-                    trouve = 1; // Sortir si l'arrêt à éviter est déjà dans la liste des arrêts à privilégier
-                }
-            }
-            if(trouve == 0){
-                // Ajouter l'arrêt à éviter au vector d'arrêts à éviter
-                // cout << "L'arrêt '" << arret << "' a été ajouté à la liste des arrêts à éviter." << endl;
-                arretsEviter.push_back(arret);
-            }
-            else{
-                cout << JAUNE << "Cet arrêt '" << BOLD << tempName << RESET << JAUNE << "' ne peut pas être évité." << RESET << endl;
-            }
-        }
-    }
-    // Afficher les arrêts à éviter
-    if(arretsEviter.empty()) {
+    if (arretsEviter.empty()) {
         cout << "Aucun arrêt à éviter." << endl;
     } else {
         cout << "Arrêts à éviter : ";
@@ -376,6 +419,69 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
         }
         cout << endl;
     }
+
+    // Demande à l'utilisateur quels arrêts il souhaite éviter
+    // cout << BLEU << BOLD << "Voulez vous rentrer des arrêts à éviter ? (O/N) " << RESET;
+    // cin >> reponse;
+    // vector<string> arretsEviter;
+    // if (reponse != "N" && reponse != "n") {
+    //     cout << BLEU << BOLD << "Entrez les arrêts à éviter (séparés de cette manière 'Campus ; Derain') : " << RESET;
+    //     string arretsEviterInput;
+    //     cin.ignore(); // Ignorer le caractère de nouvelle ligne restant dans le tampon
+    //     getline(cin, arretsEviterInput);
+    //     stringstream ss(arretsEviterInput);
+    //     string arret;
+    //     while (getline(ss, arret, ';')) {
+    //         string tempName = arret; // Conserver le nom de l'arrêt pour l'affichage
+    //         arret = nettoyerUTF8(arret); // Nettoyer le nom de l'arrêt
+
+    //         // Supprimer les espaces en début et en fin de chaîne
+    //         arret.erase(arret.find_last_not_of(" \t") + 1); // Supprimer les espaces en fin
+    //         arret.erase(0, arret.find_first_not_of(" \t")); // Supprimer les espaces en début
+
+    //         vector<string> arretIds = getStopIdByName(arret, *stops); // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
+    //         // arret = getStopIdByName(arret, *stops)[0]; // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
+    //         if(arretIds.empty()){
+    //             cout << "Aucun arrêt trouvé pour le nom '" << arret << "'." << endl;
+    //             erreurEntree(arret, stops); // Afficher l'erreur pour l'arrêt à éviter
+    //             return; // Sortir si aucun arrêt n'est trouvé
+    //         }
+    //         else if(arretIds.size() > 1){
+    //             choixVille(arretIds, *stops); // Demander à l'utilisateur de choisir une ville si plusieurs arrêts sont trouvés
+    //             arret = arretIds[0]; // Prendre le premier ID trouvé
+    //         }
+    //         else{
+    //             arret = arretIds[0]; // Prendre le premier ID trouvé
+    //         }
+
+    //         // Véfifie si l'arret à éviter est déjà dans le vector d'arrêts à privilégier
+    //         int trouve = 0;
+    //         for(int i = 0 ; i < arretsPrivilegier.size() ; i++){
+    //             if(arret == arretsPrivilegier[i]){
+    //                 cout << "L'arrêt '" << arret << "' est déjà dans la liste des arrêts à privilégier." << endl;
+    //                 trouve = 1; // Sortir si l'arrêt à éviter est déjà dans la liste des arrêts à privilégier
+    //             }
+    //         }
+    //         if(trouve == 0){
+    //             // Ajouter l'arrêt à éviter au vector d'arrêts à éviter
+    //             // cout << "L'arrêt '" << arret << "' a été ajouté à la liste des arrêts à éviter." << endl;
+    //             arretsEviter.push_back(arret);
+    //         }
+    //         else{
+    //             cout << JAUNE << "Cet arrêt '" << BOLD << tempName << RESET << JAUNE << "' ne peut pas être évité." << RESET << endl;
+    //         }
+    //     }
+    // }
+    // // Afficher les arrêts à éviter
+    // if(arretsEviter.empty()) {
+    //     cout << "Aucun arrêt à éviter." << endl;
+    // } else {
+    //     cout << "Arrêts à éviter : ";
+    //     for (const auto& arret : arretsEviter) {
+    //         cout << arret << " ";
+    //     }
+    //     cout << endl;
+    // }
 
     // ajouter le code de vérification de la bonne ville quand il y a plusieurs départ en retirant les autres du vector
 
@@ -548,7 +654,7 @@ int levenshteinDistance(const string& s1, const string& s2) {
     return dp[len1][len2];
 }
 
-void erreurEntree(const string& nameArret, unordered_map<string, Arret>* stops) {
+void erreurEntree(const string& nameArret, const unordered_map<string, Arret>* stops) {
     string closestStopName;
     int minDistance = numeric_limits<int>::max();
 
