@@ -394,8 +394,9 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
             // h1.print();
             vector<vector<Noeud>> chemin = Dijkstra(depart[i], arrivee[i], h1, stops, lignes, arretsEviter);
             if(!chemin.empty()){
-                h1 = cheminsFinaux[i][cheminsFinaux[i].size()-1][cheminsFinaux[i][cheminsFinaux[i].size()-1].size()-1].heure;
                 cheminsFinaux.push_back(chemin);
+                h1 = cheminsFinaux[i][cheminsFinaux[i].size()-1][cheminsFinaux[i][cheminsFinaux[i].size()-1].size()-1].heure;
+                h1.ajouterMinutes(1);
             }
             else{
                 cout << ROUGE << "Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;

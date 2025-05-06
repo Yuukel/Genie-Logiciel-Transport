@@ -52,11 +52,7 @@ vector<vector<Noeud>> Dijkstra(string depart, string arrivee, Horaire heure, uno
         if(!chemin.empty()){
             depart = (chemin.end()-1)->arretId;
             heure = (chemin.end()-1)->heure;
-            heure.minute += 1;
-            if(heure.minute == 60){
-                heure.heure += 1;
-                heure.minute = 0;
-            }
+            heure.ajouterMinutes(1);
         }
 
         lignesDirectes = (*stops)[depart].getLignes();
