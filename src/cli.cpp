@@ -349,6 +349,8 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
     }
     else{
         cout << "Arrêts à privilégier : ";
+        if (arretsPrivilegier.empty())
+            cout << "Aucun";
         for (const auto& arret : arretsPrivilegier) {
             cout << arret << " ";
         }
@@ -368,6 +370,8 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
         return; // Sortir si aucun arrêt n'est trouvé
     } else {
         cout << "Arrêts à éviter : ";
+        if (arretsEviter.empty())
+            cout << "Aucun";
         for (const auto& arret : arretsEviter) {
             cout << arret << " ";
         }
