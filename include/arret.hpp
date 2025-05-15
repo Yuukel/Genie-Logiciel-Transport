@@ -1,9 +1,9 @@
 #ifndef ARRET
 #define ARRET
 
-#include "trajet.hpp" // Inclure le fichier d'en-tête de la classe trajet
-#include <iostream> // Pour std::cout et std::endl
-#include <cstdio> // Pour printf
+#include "trajet.hpp"
+#include <iostream>
+#include <cstdio>
 #include <string>
 #include <vector>
 #include <string>

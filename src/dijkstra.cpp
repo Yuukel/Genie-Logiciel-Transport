@@ -37,6 +37,7 @@ vector<vector<Noeud>> Dijkstra(string depart, string arrivee, Horaire heure, uno
     unordered_map<string, Horaire> heuresDepart;
     vector<string> lignesDirectes;
 
+    // on verifie si le depart et l'arrivee sont les memes
     while(chemin.empty() || (chemin.end()-1)->arretId != arrivee){
         heuresDepart.clear();
         lignesDirectes.clear();
@@ -158,7 +159,7 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
 
     while(dernierTraite.arretId != arrivee){ // tant que le noeud de depart n'est pas le meme que le noeud d'arrivee
         // on cherche les voisins du dernier noeud traite
-        //ajout des voisins directs du dernier noeud traite
+        // ajout des voisins directs du dernier noeud traite
         for (int i = 0; i < lignesDirectes.size() ; i++) {
             if(!arretsVisites.empty() && interPlein){
                 break;
@@ -226,7 +227,6 @@ vector<Noeud> DijkstraAlgo(string depart, string arrivee, Horaire heure, unorder
         // on cherche le voisin avec la plus petite heure de passage (normalement le premier de la liste)
 
         if(arretsVoisins.empty()){ // si il n'y a pas de voisins
-            cout << "Il n'y a pas de voisins" << endl;
             return {};
         }
 

@@ -146,7 +146,6 @@ void choixVille(vector<string>& stopIds, const unordered_map<string, Arret>& sto
     villeName.erase(it, villeName.end()); // Supprime les doublons
 
     if(villeName.size() == 1) {
-        // cout << "Ville unique trouvée : " << villeName[0] << endl;
         return; // Sortir si une seule ville est trouvée
     }
 
@@ -172,8 +171,9 @@ void choixVille(vector<string>& stopIds, const unordered_map<string, Arret>& sto
             break; // Sortir de la boucle si la ville est valide
         }
     }
-    cout << "Sortie du for" << endl;
     if (!villeValide) {
+        stopIds.clear(); // Vider le vecteur d'IDs d'arrêts
+        stopIds.push_back("erreur"); // Ajouter une valeur d'erreur
         cerr << ROUGE << "Erreur : Ville choisie invalide." << RESET << endl;
         return; // Sortir si la ville choisie n'est pas valide
     }
@@ -194,7 +194,6 @@ void choixVille(vector<string>& stopIds, const unordered_map<string, Arret>& sto
 
     stopIds.push_back(bonStopId); // Ajouter l'ID de l'arrêt correspondant à la ville choisie
 
-    // cout << "DEBUG sortie de fonction: " << stopIds[0] << endl;
 }
 
 vector<string> optionsChemin(const unordered_map<string, Arret>& stops, const vector<string>& departName, const vector<string>& arriveeName) {
@@ -204,7 +203,7 @@ vector<string> optionsChemin(const unordered_map<string, Arret>& stops, const ve
     cin >> reponse;
     vector<string> arrets;
     if (reponse != "N" && reponse != "n") {
-        cout << BLEU << BOLD << "Entrez les arrêts intermédiaires (séparés de cette manière 'Campus ; Derain') : " << RESET;
+        cout << BLEU << BOLD << "Entrez les arrêts (séparés de cette manière 'Campus ; Derain') : " << RESET;
         string arretsInput;
         cin.ignore(); // Ignorer le caractère de nouvelle ligne restant dans le tampon
         getline(cin, arretsInput);
@@ -218,14 +217,16 @@ vector<string> optionsChemin(const unordered_map<string, Arret>& stops, const ve
             arret.erase(0, arret.find_first_not_of(" \t")); // Supprimer les espaces en début
 
             vector<string> arretIds = getStopIdByName(arret, stops); // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
-            // arret = getStopIdByName(arret, *stops)[0]; // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
+            
             if(arretIds.empty()){
-                cerr << "Aucun arrêt trouvé pour le nom '" << arret << "'." << endl;
-                erreurEntree(arret, &stops); // Afficher l'erreur pour l'arrêt à éviter
+                cerr << ROUGE <<"Erreur : Aucun arrêt trouvé pour le nom '" << BOLD << arret << RESET << ROUGE << "'." << RESET << endl;
                 return {}; // Sortir si aucun arrêt n'est trouvé
             }
             else if(arretIds.size() > 1){
                 choixVille(arretIds, stops); // Demander à l'utilisateur de choisir une ville si plusieurs arrêts sont trouvés
+                if(arretIds[0] == "erreur"){
+                    return {"erreur"}; // Sortir si aucun arrêt n'est trouvé
+                }
                 arret = arretIds[0]; // Prendre le premier ID trouvé
             }
             else{
@@ -236,7 +237,7 @@ vector<string> optionsChemin(const unordered_map<string, Arret>& stops, const ve
             bool ignorerArret = false;
             for (const auto& depart : departName) {
                 if (arret == depart) {
-                    cout << JAUNE << "L'arrêt '" << BOLD << depart << RESET << JAUNE << "' est le même que le départ/l'un des départs (intermédiares)." << RESET << endl;
+                    cout << JAUNE << "L'arrêt '" << BOLD << depart << RESET << JAUNE << "' est le même que le départ/l'un des départs." << RESET << endl;
                     ignorerArret = true;
                     break;
                 }
@@ -244,7 +245,7 @@ vector<string> optionsChemin(const unordered_map<string, Arret>& stops, const ve
             if (ignorerArret) continue; // Sortir si l'arrêt est le même que le départ
             for (const auto& arrivee : arriveeName) {
                 if (arret == arrivee) {
-                    cout << JAUNE << "L'arrêt '" << BOLD << arrivee << RESET << JAUNE << "' est le même que l'arrivée/l'un des arrivés (intermédiaires)." << RESET << endl;
+                    cout << JAUNE << "L'arrêt '" << BOLD << arrivee << RESET << JAUNE << "' est le même que l'arrivée/l'un des arrivés." << RESET << endl;
                     ignorerArret = true;
                     break;
                 }
@@ -322,78 +323,38 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
     }
 
     if (depart == arrivee) {
-        cerr << "\033[31mLe départ est le même que l'arrivée.\033[0m" << endl;
+        cerr << "\033[31mErreur : Le départ est le même que l'arrivée.\033[0m" << endl;
         return; // Sortir si le départ et l'arrivée sont identiques
     }
 
     if (depart.size() > 1){
         choixVille(depart, *stops); // Demander à l'utilisateur de choisir une ville si plusieurs arrêts sont trouvés
+        if(depart[0] == "erreur"){
+            return; // Sortir si aucun arrêt n'est trouvé
+        }
     }
 
     if (arrivee.size() > 1){
         choixVille(arrivee, *stops); // Demander à l'utilisateur de choisir une ville si plusieurs arrêts sont trouvés
+        if(arrivee[0] == "erreur"){
+            return; // Sortir si aucun arrêt n'est trouvé
+        }
     }
-
-    // Demande à l'utilisateur quels arrêts il souhaite privilégier
-    // string reponse;
-    // cout << BLEU << BOLD << "Voulez vous rentrer des arrêts intermédiaires ? (O/N) " << RESET;
-    // cin >> reponse;
-    // vector<string> arretsPrivilegier;
-    // if (reponse != "N" && reponse != "n") {
-    //     cout << BLEU << BOLD << "Entrez les arrêts intermédiaires (séparés de cette manière 'Campus ; Derain') : " << RESET;
-    //     string arretsPrivilegierInput;
-    //     cin.ignore(); // Ignorer le caractère de nouvelle ligne restant dans le tampon
-    //     getline(cin, arretsPrivilegierInput);
-    //     stringstream ss(arretsPrivilegierInput);
-    //     string arret;
-    //     while (getline(ss, arret, ';')) {
-    //         arret = nettoyerUTF8(arret); // Nettoyer le nom de l'arrêt
-
-    //         // Supprimer les espaces en début et en fin de chaîne
-    //         arret.erase(arret.find_last_not_of(" \t") + 1); // Supprimer les espaces en fin
-    //         arret.erase(0, arret.find_first_not_of(" \t")); // Supprimer les espaces en début
-
-    //         vector<string> arretIds = getStopIdByName(arret, *stops); // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
-    //         // arret = getStopIdByName(arret, *stops)[0]; // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
-    //         if(arretIds.empty()){
-    //             cout << "Aucun arrêt trouvé pour le nom '" << arret << "'." << endl;
-    //             erreurEntree(arret, stops); // Afficher l'erreur pour l'arrêt à éviter
-    //             return; // Sortir si aucun arrêt n'est trouvé
-    //         }
-    //         else if(arretIds.size() > 1){
-    //             choixVille(arretIds, *stops); // Demander à l'utilisateur de choisir une ville si plusieurs arrêts sont trouvés
-    //             arret = arretIds[0]; // Prendre le premier ID trouvé
-    //         }
-    //         else{
-    //             arret = arretIds[0]; // Prendre le premier ID trouvé
-    //         }
-            
-    //         arretsPrivilegier.push_back(arret);
-    //     }
-    // }
-    // // Afficher les arrêts à éviter
-    // if(arretsPrivilegier.empty()) {
-    //     cout << "Aucun arrêt intermédiaire." << endl;
-    // } else {
-    //     cout << "Arrêts intermédiaires : ";
-    //     for (const auto& arret : arretsPrivilegier) {
-    //         cout << arret << " ";
-    //     }
-    //     cout << endl;
-    // }
 
     cout << BLEU << BOLD << "Voulez vous rentrer des arrêts intermédiaires ? (O/N) " << RESET;
     vector<string> arretsPrivilegier = optionsChemin(*stops, depart, arrivee); // Obtenir les arrêts à privilégier
-
-    if (arretsPrivilegier.empty()) {
-        cerr << "Aucun arrêt à privilégier." << endl;
-    } else {
+    // optionChemin ne renvoie pas d'arrêts à privilégier
+    if (arretsPrivilegier.size() >= 1 && arretsPrivilegier[0] == "erreur") {
+        return; // Sortir si aucun arrêt n'est trouvé
+    }
+    else{
         cout << "Arrêts à privilégier : ";
         for (const auto& arret : arretsPrivilegier) {
             cout << arret << " ";
         }
         cout << endl;
     }
+
     for(int i = 0 ; i < arretsPrivilegier.size() ; i++){
         depart.push_back(arretsPrivilegier[i]);
         arrivee.insert(arrivee.begin()+i, arretsPrivilegier[i]);
@@ -403,8 +364,8 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
     vector<string> arretsEviter = optionsChemin(*stops, depart, arrivee); // Obtenir les arrêts à éviter
     retireDoublonsCheminRetirer(arretsEviter, depart, arrivee); // Supprimer les arrêts de départ et d'arrivée du vecteur cheminRetirer
 
-    if (arretsEviter.empty()) {
-        cout << "Aucun arrêt à éviter." << endl;
+    if (arretsEviter.size() >= 1 && arretsEviter[0] == "erreur") {
+        return; // Sortir si aucun arrêt n'est trouvé
     } else {
         cout << "Arrêts à éviter : ";
         for (const auto& arret : arretsEviter) {
@@ -412,78 +373,6 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
         }
         cout << endl;
     }
-
-    // Demande à l'utilisateur quels arrêts il souhaite éviter
-    // cout << BLEU << BOLD << "Voulez vous rentrer des arrêts à éviter ? (O/N) " << RESET;
-    // cin >> reponse;
-    // vector<string> arretsEviter;
-    // if (reponse != "N" && reponse != "n") {
-    //     cout << BLEU << BOLD << "Entrez les arrêts à éviter (séparés de cette manière 'Campus ; Derain') : " << RESET;
-    //     string arretsEviterInput;
-    //     cin.ignore(); // Ignorer le caractère de nouvelle ligne restant dans le tampon
-    //     getline(cin, arretsEviterInput);
-    //     stringstream ss(arretsEviterInput);
-    //     string arret;
-    //     while (getline(ss, arret, ';')) {
-    //         string tempName = arret; // Conserver le nom de l'arrêt pour l'affichage
-    //         arret = nettoyerUTF8(arret); // Nettoyer le nom de l'arrêt
-
-    //         // Supprimer les espaces en début et en fin de chaîne
-    //         arret.erase(arret.find_last_not_of(" \t") + 1); // Supprimer les espaces en fin
-    //         arret.erase(0, arret.find_first_not_of(" \t")); // Supprimer les espaces en début
-
-    //         vector<string> arretIds = getStopIdByName(arret, *stops); // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
-    //         // arret = getStopIdByName(arret, *stops)[0]; // Obtenir l'ID de l'arrêt (0 car on part du principe qu'il n'y a qu'un seul ID)
-    //         if(arretIds.empty()){
-    //             cout << "Aucun arrêt trouvé pour le nom '" << arret << "'." << endl;
-    //             erreurEntree(arret, stops); // Afficher l'erreur pour l'arrêt à éviter
-    //             return; // Sortir si aucun arrêt n'est trouvé
-    //         }
-    //         else if(arretIds.size() > 1){
-    //             choixVille(arretIds, *stops); // Demander à l'utilisateur de choisir une ville si plusieurs arrêts sont trouvés
-    //             arret = arretIds[0]; // Prendre le premier ID trouvé
-    //         }
-    //         else{
-    //             arret = arretIds[0]; // Prendre le premier ID trouvé
-    //         }
-
-    //         // Véfifie si l'arret à éviter est déjà dans le vector d'arrêts à privilégier
-    //         int trouve = 0;
-    //         for(int i = 0 ; i < arretsPrivilegier.size() ; i++){
-    //             if(arret == arretsPrivilegier[i]){
-    //                 cout << "L'arrêt '" << arret << "' est déjà dans la liste des arrêts à privilégier." << endl;
-    //                 trouve = 1; // Sortir si l'arrêt à éviter est déjà dans la liste des arrêts à privilégier
-    //             }
-    //         }
-    //         if(trouve == 0){
-    //             // Ajouter l'arrêt à éviter au vector d'arrêts à éviter
-    //             // cout << "L'arrêt '" << arret << "' a été ajouté à la liste des arrêts à éviter." << endl;
-    //             arretsEviter.push_back(arret);
-    //         }
-    //         else{
-    //             cout << JAUNE << "Cet arrêt '" << BOLD << tempName << RESET << JAUNE << "' ne peut pas être évité." << RESET << endl;
-    //         }
-    //     }
-    // }
-    // // Afficher les arrêts à éviter
-    // if(arretsEviter.empty()) {
-    //     cout << "Aucun arrêt à éviter." << endl;
-    // } else {
-    //     cout << "Arrêts à éviter : ";
-    //     for (const auto& arret : arretsEviter) {
-    //         cout << arret << " ";
-    //     }
-    //     cout << endl;
-    // }
-
-    // ajouter le code de vérification de la bonne ville quand il y a plusieurs départ en retirant les autres du vector
-
-
-
-    // for(int i = 0 ; i < depart.size() ; i++){
-    //     cout << "depart i : " << depart[i] << endl;
-    //     cout << "arrivee i : " << arrivee[i] << endl;
-    // }
 
     vector<vector<vector<Noeud>>> cheminsFinaux;
     for(int i = 0 ; i < depart.size() ; i++){
@@ -493,13 +382,13 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
             h1 = cheminsFinaux[i][cheminsFinaux[i].size()-1][cheminsFinaux[i][cheminsFinaux[i].size()-1].size()-1].heure;
             h1.ajouterMinutes(1);
         } else{
-            cerr << ROUGE << "Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
+            cerr << ROUGE << "Erreur : Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
             return; // Sortir si aucun chemin n'est trouvé
         }
     }
 
     if(cheminsFinaux.empty()){
-        cerr << ROUGE << "Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
+        cerr << ROUGE << "Erreur : Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
         return; // Sortir si aucun chemin n'est trouvé
     }
     else{
@@ -569,11 +458,19 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
                 }
                 cout << BLEU << BOLD << "Entrez l'heure de départ (HH MM) : " << RESET;
                 cin >> h1.heure >> h1.minute;
+                // Vider le tampon d'entrée
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignorer les caractères restants dans le tampon
                 if (h1.heure < 0 || h1.heure > 23 || h1.minute < 0 || h1.minute > 59) {
                     cerr << "\033[31mErreur : Heure de départ invalide.\033[0m" << endl;
                     return; // Sortir si l'heure de départ est invalide
                 }
                 vector<string> depart = getStopIdByName(departName, *stops);
+                if(depart.size() > 1){
+                    choixVille(depart, *stops); // Demander à l'utilisateur de choisir une ville si plusieurs arrêts sont trouvés
+                    if(depart[0] == "erreur"){
+                        return; // Sortir si aucun arrêt n'est trouvé
+                    }
+                }
                 if (depart.empty() || arrivee.empty()) {
                     if (depart.empty()) {
                         cerr << "\033[31mErreur : Impossible de trouver l'arrêt de départ spécifié.\033[0m" << endl;
@@ -598,7 +495,7 @@ void entreeUtilisateur(unordered_map<string, Arret>* stops, vector<Ligne>* ligne
                     }
                 }
                 if (cheminsFinaux.empty()) {
-                    cerr << ROUGE << "Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
+                    cerr << ROUGE << "Erreur : Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
                     return; // Sortir si aucun chemin n'est trouvé
                 }
                 // Réinitialiser le nombre total d'étapes
@@ -699,7 +596,7 @@ void afficherChemin2(const vector<vector<Noeud>>& chemin, unordered_map<string, 
     int taille = 0;
 
     if (chemin.empty()) {
-        cerr << ROUGE << "Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
+        cerr << ROUGE << "Erreur : Aucun chemin trouvé entre les arrêts spécifiés." << RESET << endl;
         return;
     }
 
@@ -736,18 +633,15 @@ void afficherChemin2(const vector<vector<Noeud>>& chemin, unordered_map<string, 
     };
 
     auto printBoxLine = [&](const string& affichage) {
-        // string affichage = content.substr(0, innerWidth);  // tronque si trop long
         int cpt_couleurs = compterSequencesCouleurs(affichage);
         taille = affichage.size() - (cpt_couleurs);
         int cpt = compterMultiOctets(affichage);
         int nb_espaces = (totalWidth - taille);
-        // cout << "DEBUG espaces : " << nb_espaces << " = " << totalWidth << " - " << taille << endl;
 
         if(cpt == 0) nb_espaces -= 2;
         if(cpt == 1) nb_espaces -= 1;
         if(cpt > 1) nb_espaces += (cpt - 2);
-        // if(cpt_couleurs != 0) nb_espaces += (5*cpt_couleurs)-1 + add_espace;
-        // cout << "DEBUG new nb_espaces : " << nb_espaces << " conditions: cpt " << cpt << " cpt_couleurs " << cpt_couleurs << endl;
+        
         cout << "|";
         cout << affichage;
         cout << RESET;
@@ -791,7 +685,7 @@ void afficherChemin2(const vector<vector<Noeud>>& chemin, unordered_map<string, 
         }
         string tripHeadsign = (indexLigne != -1) ? (*lignes)[indexLigne].tripHeadsign : "Inconnu";
 
-        string l = string(ORANGE) + string(BOLD) + "  Ligne : " + ligneName + " -> " + tripHeadsign;
+        string l = string(ORANGE) + string(BOLD) + "  " + ligneName + " -> " + tripHeadsign;
         printBoxLine(l);
         l = string(VERT) + string(BOLD) + "  Départ : " + string(BLANC) + departName + string(BLEU) + "  Heure : " + string(BLANC) + departHeure;
         printBoxLine(l);
@@ -856,7 +750,7 @@ void afficherChemin2(const vector<vector<Noeud>>& chemin, unordered_map<string, 
 
             ligneSeparation();
             ligneVide();
-            string l = string(VERT) + string(BOLD) + "  Ligne : " + ligneName + " -> " + tripHeadsign;
+            string l = string(VERT) + string(BOLD) + "  " + ligneName + " -> " + tripHeadsign;
             printBoxLine(l);
             l = string(BLEU) + string(BOLD) + "  Départ : " + string(BLANC) + departName + string(BLEU) + "  Heure : " + string(BLANC) + departHeure;
             printBoxLine(l);
@@ -871,26 +765,3 @@ void afficherChemin2(const vector<vector<Noeud>>& chemin, unordered_map<string, 
     printCentered("Arrivee");
     ligneSeparation();
 }
-
-
-// =================================================
-// |             Ligne A -> tripHeadsign           |
-// |                                               |
-// |     Départ: *nomArret*     Heure: *heure*     |
-// |                                               |
-// |     Arrivée: *nomArret*    Heure: *heure*     |
-// |                                               |
-// =================================================
-
-
-// =================================================
-// |             Ligne C -> tripHeadsign           |
-// |                                               |
-// |     Départ: *nomArret*     Heure: *heure*     |
-// |                                               |
-// |     Arrivée: *nomArret*    Heure: *heure*     |
-// |                                               |
-// =================================================
-
-
-// ==================== Arrivée ====================
